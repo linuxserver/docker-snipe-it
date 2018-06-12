@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+sed -i "s/APP_URL_PLACEHOLDER/${APP_URL}/g" /config/nginx/site-confs/default
+exec /usr/sbin/nginx -c /config/nginx/nginx.conf
