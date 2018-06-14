@@ -1,29 +1,33 @@
-#!/bin/sh
+#! /bin/bash
 
-# create data directories
-for dir in \
-  'data/private_uploads' \
-  'data/uploads' \
-  'data/uploads/accessories' \
-  'data/uploads/avatars' \
-  'data/uploads/barcodes' \
-  'data/uploads/categories' \
-  'data/uploads/components' \
-  'data/uploads/companies' \
-  'data/uploads/consumables' \
-  'data/uploads/departments' \
-  'data/uploads/locations' \
-  'data/uploads/manufacturers' \
-  'data/uploads/models' \
-  'data/uploads/suppliers' \
-  'dumps' \
-  'keys' \
-  'logs' \
-  'framework/views' \
-  'framework/sessions' \
-  'framework/cache' \
-  'debugbar' ; do
-	  mkdir -p "/config/$dir"
+# Directories to create
+dirs=('storage/private_uploads'
+      'uploads/accessories'
+      'uploads/avatars'
+      'uploads/barcodes'
+      'uploads/categories'
+      'uploads/components'
+      'uploads/companies'
+      'uploads/consumables'
+      'uploads/departments'
+      'uploads/locations'
+      'uploads/manufacturers'
+      'uploads/models'
+      'uploads/suppliers'
+      'storage/dumps'
+      'storage/keys'
+      'storage/logs'
+      'storage/framework/views'
+      'storage/framework/sessions'
+      'storage/framework/cache'
+      'storage/debugbar'
+      'storage/app/backups')
+
+# Create directories on mounted storage
+for dir in ${dirs[@]} ; do
+  if [ ! -d "/config/$dir" ]; then
+    mkdir -p "/config/$dir"
+  fi
 done
 
 # Create API key if needed
@@ -36,7 +40,7 @@ then
 fi
 
 # Ownership
-chown -R abc:abc /config/ /var/www/html/storage/
+chown -R abc:abc /config/
 
 # If the Oauth DB files are not present copy the vendor files over to the db migrations
 if [ ! -f "/var/www/html/database/migrations/*create_oauth*" ]; then
