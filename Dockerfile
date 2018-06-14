@@ -3,8 +3,9 @@ FROM lsiobase/alpine.nginx:3.7
 # set version label
 ARG BUILD_DATE
 ARG VERSION
+ARG SNIPEIT_RELEASE
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="TheLamer"
+LABEL maintainer="TheLamer, sparkyballs"
 
 RUN \
  echo "**** install runtime packages ****" && \
@@ -49,9 +50,11 @@ RUN \
  echo "**** install snipe-it ****" && \
  mkdir -p \
 	/var/www/html/ && \
- SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/snipe/snipe-it/releases/latest" \
-	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
-curl -o \
+ if [ -z ${SNIPEIT_RELEASE+x} ]; then \
+ 	SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/snipe/snipe-it/releases/latest" \
+        | awk '/tag_name/{print $4;exit}' FS='[""]'); \
+ fi && \
+ curl -o \
  /tmp/snipeit.tar.gz -L \
 	"https://github.com/snipe/snipe-it/archive/${SNIPEIT_RELEASE}.tar.gz" && \
  tar xf \
