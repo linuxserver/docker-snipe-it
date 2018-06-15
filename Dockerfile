@@ -29,20 +29,7 @@ RUN \
 	php7-zip \
 	tar \
 	unzip && \
- echo "**** configure php and nginx for snipe-it ****" && \
- sed -i \
-	-e 's/;opcache.enable.*=.*/opcache.enable=1/g' \
-	-e 's/;opcache.interned_strings_buffer.*=.*/opcache.interned_strings_buffer=8/g' \
-	-e 's/;opcache.max_accelerated_files.*=.*/opcache.max_accelerated_files=10000/g' \
-	-e 's/;opcache.memory_consumption.*=.*/opcache.memory_consumption=128/g' \
-	-e 's/;opcache.save_comments.*=.*/opcache.save_comments=1/g' \
-	-e 's/;opcache.revalidate_freq.*=.*/opcache.revalidate_freq=1/g' \
-	-e 's/;always_populate_raw_post_data.*=.*/always_populate_raw_post_data=-1/g' \
-	-e 's/variables_order = .*/variables_order = "EGPCS"/' \
- /etc/php7/php.ini && \
- sed -i \
-	'/opcache.enable=1/a opcache.enable_cli=1' \
- /etc/php7/php.ini && \
+ echo "**** configure php-fpm to pass env vars ****" && \
  sed -i \
 	's/;clear_env = no/clear_env = no/g' \
  /etc/php7/php-fpm.d/www.conf && \
