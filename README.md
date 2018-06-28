@@ -28,7 +28,7 @@ The [LinuxServer.io][linuxserverurl] team brings you another image release featu
  + security updates
 
 # [linuxserver/snipe-it](huburl)
-[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][hub][![Build Status](https://ci.linuxserver.io/buildStatus/icon?job=Docker-Builders/x86-64/x86-64-snipe-it)](https://ci.linuxserver.io/job/Docker-Builders/job/x86-64/job/x86-64-snipe-it/)
+[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][hub][![Build Status](https://pipeline.linuxserver.io/buildStatus/icon?job=docker-snipe-it/master)](https://pipeline.linuxserver.io/job/docker-snipe-it/job/master/)
 
 Snipe-IT makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
@@ -97,7 +97,7 @@ The application accepts a series of environment variables to further customize i
 | `-e APP_TIMEZONE=` | The timezone the application will use IE US/Pacific|
 | `-e APP_ENV=` | Default is production but can use testing or develop|
 | `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|
-| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here][local]|
+| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here][localesurl]|
 | `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|
 | `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|
 | `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|
