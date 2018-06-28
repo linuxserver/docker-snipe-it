@@ -737,10 +737,53 @@ pipeline {
        PR Release Logic
        ################ */
     // Push to PR user dockerhub endpoint when this is a pull request
-    stage('Docker-Push-PR') {
+    stage('Docker-Push-PR-Single') {
+     when {
+       not {
+         environment name: 'CHANGE_ID', value: ''
+       }
+       expression{
+         env.MULTIARCH == 'false'
+       }
+     }
+     steps {
+       withCredentials([
+         [
+           $class: 'UsernamePasswordMultiBinding',
+           credentialsId: 'c1701109-4bdc-4a9c-b3ea-480bec9a2ca6',
+           usernameVariable: 'DOCKERUSER',
+           passwordVariable: 'DOCKERPASS'
+         ]
+       ]) {
+         echo 'Logging into DockerHub'
+         sh '''#! /bin/bash
+            echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
+            '''
+         echo 'Tag images to the built one'
+         sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:latest"
+         sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+         echo 'Pushing both tags'
+         sh "docker push ${PR_DOCKERHUB_IMAGE}:latest"
+         sh "docker push ${PR_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+       }
+       script{
+         env.CODE_URL = sh(
+           script: '''echo https://github.com/${LS_USER}/${LS_REPO}/pull/${PULL_REQUEST}''',
+           returnStdout: true).trim()
+         env.DOCKERHUB_LINK = sh(
+           script: '''echo https://hub.docker.com/r/${PR_DOCKERHUB_IMAGE}/tags/''',
+           returnStdout: true).trim()
+       }
+     }
+    }
+    // Push to PR user dockerhub endpoint when this is a pull request
+    stage('Docker-Push-PR-Multi') {
       when {
         not {
           environment name: 'CHANGE_ID', value: ''
+        }
+        expression{
+          env.MULTIARCH == 'true'
         }
       }
       steps {
