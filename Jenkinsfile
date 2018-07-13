@@ -43,14 +43,6 @@ pipeline {
     DIST_REPO = 'none'
     DIST_REPO_PACKAGES = 'none'
     MULTIARCH='true'
-    CI='true'
-    CI_PORT='80'
-    CI_SSL='false'
-    CI_DELAY='5'
-    CI_DOCKERENV='APP_URL=_|DB_CONNECTION=sqlite_testing'
-    CI_AUTH='user:password'
-    CI_WEBPATH=''
-    CI_URL='none'
   }
   stages {
     // Setup all the basic environment variables needed for the build
@@ -425,183 +417,10 @@ pipeline {
     /* #######
        Testing
        ####### */
-    // Tag to the Dev user dockerhub endpoint when this is a non master branch
-    stage('Docker-Tag-Dev-Single') {
-      when {
-        not {
-         branch "master"
-        }
-        environment name: 'CHANGE_ID', value: ''
-        expression{
-          env.MULTIARCH == 'false'
-        }
-      }
-      steps {
-        echo 'Tag the release for dev'
-        sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-      }
-    }
-    // Tag to the Dev user dockerhub endpoint when this is a non master branch
-    stage('Docker-Tag-Dev-Multi') {
-      when {
-        not {
-         branch "master"
-        }
-        environment name: 'CHANGE_ID', value: ''
-        expression{
-          env.MULTIARCH == 'true'
-        }
-      }
-      steps {
-        echo 'Tag the releases for dev'
-        sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:amd64-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm32v6-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm64v8-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-      }
-    }
-    // Tag to PR user dockerhub endpoint when this is a pull request
-    stage('Docker-Tag-PR-Single') {
-     when {
-       not {
-         environment name: 'CHANGE_ID', value: ''
-       }
-       expression{
-         env.MULTIARCH == 'false'
-       }
-     }
-     steps {
-       echo 'Tag the release for pr'
-       sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:latest"
-       sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-     }
-    }
-    // Tag to PR user dockerhub endpoint when this is a pull request
-    stage('Docker-Tag-PR-Multi') {
-      when {
-        not {
-          environment name: 'CHANGE_ID', value: ''
-        }
-        expression{
-          env.MULTIARCH == 'true'
-        }
-      }
-      steps {
-        echo 'Tag the releases for pr'
-        sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:amd64-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm32v6-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm64v8-latest"
-        sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-        sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-      }
-    }
-    // Before we test we need to define the endpoint and tags for the report to push to
-    stage('Test-setenv') {
-      when {
-        expression {
-          env.CI == 'true'
-        }
-      }
-      steps {
-        script{
-          env.CI_IMAGE = sh(
-            script: '''#! /bin/bash
-                       # If this is a live release use the live image endpoint
-                       if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo ${DOCKERHUB_IMAGE}
-                       # If this is a dev release use dev image endpoint
-                       elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo ${DEV_DOCKERHUB_IMAGE}
-                       # This is a PR
-                       else:
-                         echo ${PR_DOCKERHUB_IMAGE}
-                       fi''',
-          returnStdout: true).trim()
-          env.CI_TAGS = sh(
-            script: '''#! /bin/bash
-                       # If multi arch pass an array of tags
-                       if [ ${MULTIARCH} == 'true' ]; then
-                         # If this is a live release use the external version tags
-                         if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                           echo "amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
-                         # If this is a dev release use dev tags
-                         elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                           echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-                         # This is a PR
-                         else:
-                           echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                         fi
-                       elif [ ${MULTIARCH} == 'false' ]; then
-                         # If this is a live release use the external version tag
-                         if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                           echo "${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
-                         # If this is a dev release use dev tag
-                         elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                           echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-                         # This is a PR
-                         else:
-                           echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                         fi
-                       fi''',
-          returnStdout: true).trim()
-          env.CI_META_TAG = sh(
-            script: '''#! /bin/bash
-                       # If this is a live release use the external version tag
-                       if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo "${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
-                       # If this is a dev release use dev tag
-                       elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-                       # This is a PR
-                       else:
-                         echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                       fi''',
-          returnStdout: true).trim()
-        }
-      }
-    }
     // Run Container tests
     stage('Test') {
-      when {
-        expression {
-          env.CI == 'true'
-        }
-      }
       steps {
-        withCredentials([
-          string(credentialsId: 'spaces-key', variable: 'DO_KEY'),
-          string(credentialsId: 'spaces-secret', variable: 'DO_SECRET')
-        ]) {
-          echo "CI Tests running"
-          sh "docker pull lsiodev/ci:latest"
-          sh '''docker run --rm -i \
-                -v /var/run/docker.sock:/var/run/docker.sock \
-                -e IMAGE="${CI_IMAGE}" \
-                -e DELAY_START="${CI_DELAY} \
-                -e TAGS="${CI_TAGS}" \
-                -e META_TAG="${CI_META_TAG} \
-                -e PORT="${CI_PORT}" \
-                -e SSL="${CI_SSL}" \
-                -e BASE="${DIST_IMAGE}" \
-                -e SECRET_KEY="${DO_SECRET}" \
-                -e ACCESS_KEY="${DO_KEY}" \
-                -e DOCKER_ENV="${CI_DOCKERENV}" \
-                -e WEB_AUTH="${CI_AUTH}" \
-                -e WEB_PATH="${CI_WEBPATH}" \
-                -e DO_REGION="ams3" \
-                -e DO_BUCKET="lsio-ci" \
-                -t lsiodev/ci:latest \
-                python /ci/ci.py'''
-          script{
-            env.CI_URL = sh(
-              script: '''echo "https://lsio-ci.ams3.digitaloceanspaces.com/${CI_IMAGE}/${CI_META_TAG}/index.html" ''',
-              returnStdout: true).trim()
-          }
-        }
+       echo 'CI Tests for future use'
       }
     }
     /* ##################
@@ -844,6 +663,9 @@ pipeline {
           sh '''#! /bin/bash
              echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
              '''
+          echo 'Tag images to the built one'
+          sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
           echo 'Pushing both tags'
           sh "docker push ${DEV_DOCKERHUB_IMAGE}:latest"
           sh "docker push ${DEV_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
@@ -879,6 +701,13 @@ pipeline {
           sh '''#! /bin/bash
              echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
              '''
+          echo 'First Tag the releases to latest also'
+          sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:amd64-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm32v6-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm64v8-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${DEV_DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
           echo 'Push all image variants'
           sh "docker push ${DEV_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
           sh "docker push ${DEV_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
@@ -930,6 +759,9 @@ pipeline {
          sh '''#! /bin/bash
             echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
             '''
+         echo 'Tag images to the built one'
+         sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:latest"
+         sh "docker tag ${DOCKERHUB_IMAGE}:${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
          echo 'Pushing both tags'
          sh "docker push ${PR_DOCKERHUB_IMAGE}:latest"
          sh "docker push ${PR_DOCKERHUB_IMAGE}:${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
@@ -967,6 +799,13 @@ pipeline {
           sh '''#! /bin/bash
              echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
              '''
+          echo 'First Tag the releases to latest also'
+          sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:amd64-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm32v6-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm64v8-latest"
+          sh "docker tag ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+          sh "docker tag ${DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER} ${PR_DOCKERHUB_IMAGE}:arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
           echo 'Push all image variants'
           sh "docker push ${PR_DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
           sh "docker push ${PR_DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
@@ -1003,13 +842,13 @@ pipeline {
     success {
       echo "Build good send details to discord"
       sh ''' curl -X POST --data '{"avatar_url": "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png","embeds": [{"color": 1681177,\
-             "description": "**Build:**  '${BUILD_NUMBER}'\\n**CI Results:**  '${CI_URL}'\\n**Status:**  Success\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
+             "description": "**Build:**  '${BUILD_NUMBER}'\\n**Status:**  Success\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
              "username": "Jenkins"}' ${BUILDS_DISCORD} '''
     }
     failure {
       echo "Build Bad sending details to discord"
       sh ''' curl -X POST --data '{"avatar_url": "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png","embeds": [{"color": 16711680,\
-             "description": "**Build:**  '${BUILD_NUMBER}'\\n**CI Results:**  '${CI_URL}'\\n**Status:**  failure\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
+             "description": "**Build:**  '${BUILD_NUMBER}'\\n**Status:**  failure\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
              "username": "Jenkins"}' ${BUILDS_DISCORD} '''
     }
   }
