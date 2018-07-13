@@ -506,37 +506,50 @@ pipeline {
           env.CI == 'true'
         }
       }
-      script{
-        env.CI_IMAGE = sh(
-          script: '''#! /bin/bash
-                     # If this is a live release use the live image endpoint
-                     if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                       echo ${DOCKERHUB_IMAGE}
-                     # If this is a dev release use dev image endpoint
-                     elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                       echo ${DEV_DOCKERHUB_IMAGE}
-                     # This is a PR
-                     else:
-                       echo ${PR_DOCKERHUB_IMAGE}
-                     fi''',
-        returnStdout: true).trim()
-      }
-      script{
-        env.CI_TAGS = sh(
-          script: '''#! /bin/bash
-                     # If multi arch pass an array of tags
-                     if [ ${MULTIARCH} == 'true' ]; then
-                       # If this is a live release use the external version tags
+      steps {
+        script{
+          env.CI_IMAGE = sh(
+            script: '''#! /bin/bash
+                       # If this is a live release use the live image endpoint
                        if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo "amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
-                       # If this is a dev release use dev tags
+                         echo ${DOCKERHUB_IMAGE}
+                       # If this is a dev release use dev image endpoint
                        elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                         echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
+                         echo ${DEV_DOCKERHUB_IMAGE}
                        # This is a PR
                        else:
-                         echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                       fi
-                     elif [ ${MULTIARCH} == 'false' ]; then
+                         echo ${PR_DOCKERHUB_IMAGE}
+                       fi''',
+          returnStdout: true).trim()
+          env.CI_TAGS = sh(
+            script: '''#! /bin/bash
+                       # If multi arch pass an array of tags
+                       if [ ${MULTIARCH} == 'true' ]; then
+                         # If this is a live release use the external version tags
+                         if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
+                           echo "amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER}|arm64v8-${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
+                         # If this is a dev release use dev tags
+                         elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
+                           echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
+                         # This is a PR
+                         else:
+                           echo "amd64-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm32v6-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}|arm64v8-${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+                         fi
+                       elif [ ${MULTIARCH} == 'false' ]; then
+                         # If this is a live release use the external version tag
+                         if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
+                           echo "${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
+                         # If this is a dev release use dev tag
+                         elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
+                           echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
+                         # This is a PR
+                         else:
+                           echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
+                         fi
+                       fi''',
+          returnStdout: true).trim()
+          env.CI_META_TAG = sh(
+            script: '''#! /bin/bash
                        # If this is a live release use the external version tag
                        if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
                          echo "${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
@@ -546,24 +559,9 @@ pipeline {
                        # This is a PR
                        else:
                          echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                       fi
-                     fi''',
-        returnStdout: true).trim()
-      }
-      script{
-        env.CI_META_TAG = sh(
-          script: '''#! /bin/bash
-                     # If this is a live release use the external version tag
-                     if [ "${GIT_BRANCH}" == "master" ] && [ -z "CHANGE_ID" ]; then
-                       echo "${EXT_RELEASE}-ls${LS_TAG_NUMBER}"
-                     # If this is a dev release use dev tag
-                     elif [ "${GIT_BRANCH}" != "master" ] && [ -z "CHANGE_ID" ]; then
-                       echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-dev-${COMMIT_SHA}"
-                     # This is a PR
-                     else:
-                       echo "${EXT_RELEASE}-pkg-${PACKAGE_TAG}-pr-${PULL_REQUEST}"
-                     fi''',
-        returnStdout: true).trim()
+                       fi''',
+          returnStdout: true).trim()
+        }
       }
     }
     // Run Container tests
