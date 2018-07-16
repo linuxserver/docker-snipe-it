@@ -6,7 +6,7 @@ pipeline {
     EXT_USER = 'snipe'
     EXT_REPO = 'snipe-it'
     BUILD_VERSION_ARG = 'SNIPEIT_RELEASE'
-    LS_USER = 'linuxserverr'
+    LS_USER = 'linuxserver'
     LS_REPO = 'docker-snipe-it'
     DOCKERHUB_IMAGE = 'linuxserver/snipe-it'
     DEV_DOCKERHUB_IMAGE = 'lsiodev/snipe-it'
