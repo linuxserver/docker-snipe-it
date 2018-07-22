@@ -283,7 +283,7 @@ pipeline {
           string(credentialsId: 'spaces-secret', variable: 'DO_SECRET')
         ]) {
           sh '''#! /bin/bash
-                docker pull lsiodev/readme-sync
+                docker pull lsiodev/ci:latest
                 docker run --rm \
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -e IMAGE=\"${CI_IMAGE}\" \
@@ -296,7 +296,7 @@ pipeline {
                 -e SECRET_KEY=\"${DO_SECRET}\" \
                 -e ACCESS_KEY=\"${DO_KEY}\" \
                 -e DOCKER_ENV=\"${CI_DOCKERENV}\" \
-                -e WEB_SCREENSHOT=\"${CI_WEB}\"
+                -e WEB_SCREENSHOT=\"${CI_WEB}\" \
                 -e WEB_AUTH=\"${CI_AUTH}\" \
                 -e WEB_PATH=\"${CI_WEBPATH}\" \
                 -e DO_REGION="ams3" \
