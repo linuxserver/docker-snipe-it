@@ -39,7 +39,7 @@ pipeline {
     CI_WEB='true'
     CI_PORT='80'
     CI_SSL='false'
-    CI_DELAY='5'
+    CI_DELAY='10'
     CI_DOCKERENV='APP_URL=_|DB_CONNECTION=sqlite_testing'
     CI_AUTH='user:password'
     CI_WEBPATH=''
