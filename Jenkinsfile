@@ -36,6 +36,7 @@ pipeline {
                     unzip'
     MULTIARCH='true'
     CI='true'
+    CI_WEB='true'
     CI_PORT='80'
     CI_SSL='false'
     CI_DELAY='5'
@@ -178,6 +179,9 @@ pipeline {
          environment name: 'MULTIARCH', value: 'true'
        }
        steps {
+         sh "wget https://lsio-ci.ams3.digitaloceanspaces.com/qemu-aarch64-static"
+         sh "wget https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static"
+         sh "chmod +x qemu-*"
          sh "docker build --no-cache -f Dockerfile.amd64 -t ${DOCKERHUB_IMAGE}:amd64-${EXT_RELEASE}-ls${LS_TAG_NUMBER} \
          --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${EXT_RELEASE}-pkg-${PACKAGE_TAG}-ls${LS_TAG_NUMBER}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
          sh "docker build --no-cache -f Dockerfile.armhf -t ${DOCKERHUB_IMAGE}:arm32v6-${EXT_RELEASE}-ls${LS_TAG_NUMBER} \
@@ -292,6 +296,7 @@ pipeline {
                 -e SECRET_KEY=\"${DO_SECRET}\" \
                 -e ACCESS_KEY=\"${DO_KEY}\" \
                 -e DOCKER_ENV=\"${CI_DOCKERENV}\" \
+                -e WEB_SCREENSHOT=\"${CI_WEB}\"
                 -e WEB_AUTH=\"${CI_AUTH}\" \
                 -e WEB_PATH=\"${CI_WEBPATH}\" \
                 -e DO_REGION="ams3" \

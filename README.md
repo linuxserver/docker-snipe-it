@@ -3,7 +3,7 @@
 [ircurl]: https://www.linuxserver.io/irc/
 [podcasturl]: https://www.linuxserver.io/podcast/
 [appurl]: https://github.com/snipe/snipe-it
-[hub]: https://hub.docker.com/r/linuxserver/snipe-it/
+[huburl]: https://hub.docker.com/r/linuxserver/snipe-it/
 [localesurl]: https://github.com/snipe/snipe-it/tree/master/resources/lang
 
 
@@ -27,8 +27,8 @@ The [LinuxServer.io][linuxserverurl] team brings you another image release featu
  + custom base image with s6 overlay
  + security updates
 
-# [linuxserver/snipe-it](huburl)
-[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][hub][![Build Status](https://pipeline.linuxserver.io/buildStatus/icon?job=docker-snipe-it/master)](https://pipeline.linuxserver.io/job/docker-snipe-it/job/master/)
+# [linuxserver/snipe-it][huburl]
+[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][huburl][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][huburl][![Build Status](https://pipeline.linuxserver.io/buildStatus/icon?job=docker-snipe-it/master)](https://pipeline.linuxserver.io/job/docker-snipe-it/job/master/)[![CI Status](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/badge.svg)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/index.html)
 
 Snipe-IT makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
