@@ -202,64 +202,62 @@ pipeline {
        when {
          environment name: 'MULTIARCH', value: 'true'
        }
-       stages {
-         parallel {
-           stage('Build X86') {
-             steps {
-               sh "docker build --no-cache -t ${IMAGE}:amd64-${META_TAG} \
-               --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
+       parallel {
+         stage('Build X86') {
+           steps {
+             sh "docker build --no-cache -t ${IMAGE}:amd64-${META_TAG} \
+             --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
+           }
+         }
+         stage('Build ARMHF') {
+           agent {
+             label 'ARMHF'
+           }
+           steps {
+             withCredentials([
+               [
+                 $class: 'UsernamePasswordMultiBinding',
+                 credentialsId: '3f9ba4d5-100d-45b0-a3c4-633fd6061207',
+                 usernameVariable: 'DOCKERUSER',
+                 passwordVariable: 'DOCKERPASS'
+               ]
+             ]) {
+               echo 'Logging into DockerHub'
+               sh '''#! /bin/bash
+                  echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
+                  '''
+               sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static -o qemu-arm-static"
+               sh "chmod +x qemu-*"
+               sh "docker build --no-cache -f Dockerfile.armhf -t ${IMAGE}:arm32v6-${META_TAG} \
+                            --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
+               sh "docker tag ${IMAGE}:arm32v6-${META_TAG} lsiodev/buildcache:arm32v6-${COMMIT_SHA}-${BUILD_NUMBER}"
+               sh "docker push lsiodev/buildcache:arm32v6-${COMMIT_SHA}-${BUILD_NUMBER}"
              }
            }
-           stage('Build ARMHF') {
-             agent {
-               label 'ARMHF'
-             }
-             steps {
-               withCredentials([
-                 [
-                   $class: 'UsernamePasswordMultiBinding',
-                   credentialsId: '3f9ba4d5-100d-45b0-a3c4-633fd6061207',
-                   usernameVariable: 'DOCKERUSER',
-                   passwordVariable: 'DOCKERPASS'
-                 ]
-               ]) {
-                 echo 'Logging into DockerHub'
-                 sh '''#! /bin/bash
-                    echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
-                    '''
-                 sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static -o qemu-arm-static"
-                 sh "chmod +x qemu-*"
-                 sh "docker build --no-cache -f Dockerfile.armhf -t ${IMAGE}:arm32v6-${META_TAG} \
-                              --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
-                 sh "docker tag ${IMAGE}:arm32v6-${META_TAG} lsiodev/buildcache:arm32v6-${COMMIT_SHA}-${BUILD_NUMBER}"
-                 sh "docker push lsiodev/buildcache:arm32v6-${COMMIT_SHA}-${BUILD_NUMBER}"
-               }
-             }
+         }
+         stage('Build ARM64') {
+           agent {
+             label 'ARM64'
            }
-           stage('Build ARM64') {
-             agent {
-               label 'ARM64'
-             }
-             steps {
-               withCredentials([
-                 [
-                   $class: 'UsernamePasswordMultiBinding',
-                   credentialsId: '3f9ba4d5-100d-45b0-a3c4-633fd6061207',
-                   usernameVariable: 'DOCKERUSER',
-                   passwordVariable: 'DOCKERPASS'
-                 ]
-               ]) {
-                 echo 'Logging into DockerHub'
-                 sh '''#! /bin/bash
-                    echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
-                    '''
-                 sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-aarch64-static -o qemu-aarch64-static"
-                 sh "chmod +x qemu-*"
-                 sh "docker build --no-cache -f Dockerfile.aarch64 -t ${IMAGE}:arm64v8-${META_TAG} \
-                              --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
-                 sh "docker tag ${IMAGE}:arm64v8-${META_TAG} lsiodev/buildcache:arm64v8-${COMMIT_SHA}-${BUILD_NUMBER}"
-                 sh "docker push lsiodev/buildcache:arm64v8-${COMMIT_SHA}-${BUILD_NUMBER}"
-               }
+           steps {
+             withCredentials([
+               [
+                 $class: 'UsernamePasswordMultiBinding',
+                 credentialsId: '3f9ba4d5-100d-45b0-a3c4-633fd6061207',
+                 usernameVariable: 'DOCKERUSER',
+                 passwordVariable: 'DOCKERPASS'
+               ]
+             ]) {
+               echo 'Logging into DockerHub'
+               sh '''#! /bin/bash
+                  echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
+                  '''
+               sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-aarch64-static -o qemu-aarch64-static"
+               sh "chmod +x qemu-*"
+               sh "docker build --no-cache -f Dockerfile.aarch64 -t ${IMAGE}:arm64v8-${META_TAG} \
+                            --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
+               sh "docker tag ${IMAGE}:arm64v8-${META_TAG} lsiodev/buildcache:arm64v8-${COMMIT_SHA}-${BUILD_NUMBER}"
+               sh "docker push lsiodev/buildcache:arm64v8-${COMMIT_SHA}-${BUILD_NUMBER}"
              }
            }
          }
