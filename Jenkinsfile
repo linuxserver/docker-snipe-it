@@ -226,7 +226,7 @@ pipeline {
                sh '''#! /bin/bash
                   echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
                   '''
-               sh "wget https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static"
+               sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static -o qemu-arm-static"
                sh "chmod +x qemu-*"
                sh "docker build --no-cache -f Dockerfile.armhf -t ${IMAGE}:arm32v6-${META_TAG} \
                             --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
@@ -252,7 +252,7 @@ pipeline {
                sh '''#! /bin/bash
                   echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
                   '''
-               sh "wget https://lsio-ci.ams3.digitaloceanspaces.com/qemu-aarch64-static"
+               sh "curl https://lsio-ci.ams3.digitaloceanspaces.com/qemu-aarch64-static -o qemu-aarch64-static"
                sh "chmod +x qemu-*"
                sh "docker build --no-cache -f Dockerfile.aarch64 -t ${IMAGE}:arm64v8-${META_TAG} \
                             --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${META_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
