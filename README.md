@@ -28,7 +28,7 @@ The [LinuxServer.io][linuxserverurl] team brings you another image release featu
  + security updates
 
 # [linuxserver/snipe-it][huburl]
-[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][huburl][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][huburl][![Build Status](https://pipeline.linuxserver.io/buildStatus/icon?job=docker-snipe-it/master)](https://pipeline.linuxserver.io/job/docker-snipe-it/job/master/)[![CI Status](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/badge.svg)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/index.html)
+[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][huburl][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][huburl][![Build Status](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-snipe-it/job/master/badge/icon)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-snipe-it/job/master/)[![CI Status](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/badge.svg)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/index.html)
 
 Snipe-IT makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
@@ -141,8 +141,25 @@ Access the webui at `<your-ip>:8080`, for more information check out [snipe-it][
 
 &nbsp;
 
+## Supported Architectures
+
+Our images support multiple architectures such as `X86-64`, `arm64` and `armhf`. We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
+
+The architectures supported by this image are:
+
+| Architecture | Tag |
+| :----: | --- |
+| X86-64 | amd64-latest |
+| arm64 | arm32v6-latest |
+| armhf | arm64v8-latest |
+
+You can use the "latest" tag on any architecture, the docker client will automatically pull the correct image.
+
+&nbsp;
+
 ## Versions
 
 |  Date | Changes |
 | :---: | --- |
+| 05.08.18 |  Migration to live build server. |
 | 13.06.18 |  Initial Release. |
