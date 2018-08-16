@@ -7,7 +7,7 @@ pipeline {
     EXT_GIT_BRANCH = 'master'
     EXT_USER = 'snipe'
     EXT_REPO = 'snipe-it'
-    BUILD_VERSION_ARG = 'SMOKEPING_VERSION'
+    BUILD_VERSION_ARG = 'SNIPEIT_RELEASE'
     LS_USER = 'linuxserver'
     LS_REPO = 'docker-snipe-it'
     DOCKERHUB_IMAGE = 'linuxserver/snipe-it'
