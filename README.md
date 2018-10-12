@@ -44,6 +44,7 @@ docker create \
   -v <path to data>:/config \
   -e APP_URL=<hostname or ip> \
   -e MYSQL_PORT_3306_TCP_ADDR=<mysql host> \
+  -e MYSQL_PORT_3306_TCP_PORT=<mysql port> \
   -e MYSQL_DATABASE=<mysql database> \
   -e MYSQL_USER=<mysql user> \
   -e MYSQL_PASSWORD=<mysql pass> \
@@ -69,6 +70,7 @@ http://192.168.x.x:8080 would show you what's running INSIDE the container on po
 | `-v /config` | Contains your config files and data storage for Snipe-IT|
 | `-e APP_URL=` | Hostname or IP and port if applicable IE 192.168.10.1:8080 |
 | `-e MYSQL_PORT_3306_TCP_ADDR=` | Mysql hostname or IP to use|
+| `-e MYSQL_PORT_3306_TCP_PORT=` | Mysql port to use|
 | `-e MYSQL_DATABASE=` | Mysql database to use|
 | `-e MYSQL_USER=` | Mysql user to use|
 | `-e MYSQL_PASSWORD=` | Mysql password to use|
@@ -150,8 +152,8 @@ The architectures supported by this image are:
 | Architecture | Tag |
 | :----: | --- |
 | X86-64 | amd64-latest |
-| arm64 | arm32v6-latest |
-| armhf | arm64v8-latest |
+| armhf | arm32v6-latest |
+| arm64 | arm64v8-latest |
 
 You can use the "latest" tag on any architecture, the docker client will automatically pull the correct image.
 
