@@ -64,7 +64,7 @@ optional_block_1_items:
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
-  Access the webui at `<your-ip>:8080`, for more information check out [snipe-it][project_url].
+  Access the webui at `<your-ip>:8080`, for more information check out [snipe-it](https://github.com/snipe/snipe-it).
 
 # changelog
 changelogs:
