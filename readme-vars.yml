@@ -25,11 +25,11 @@ param_ports:
 param_usage_include_env: true
 param_env_vars:
   - { env_var: "APP_URL", env_value: "<hostname or ip>", desc: "Hostname or IP and port if applicable IE 192.168.10.1:8080"}
-  - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "<mysql host>", desc: "Redis port (optional)"}
-  - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "<mysql port>", desc: "ElasticSearch host (optional)"}
-  - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "ElasticSearch port (optional)"}
-  - { env_var: "MYSQL_USER", env_value: "<mysql pass>", desc: "ElasticSearch username (optional)"}
-  - { env_var: "MYSQL_PASSWORD", env_value: "changeme", desc: "ElasticSearch password (optional)"}
+  - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "<mysql host>", desc: "Mysql hostname or IP to use"}
+  - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "<mysql port>", desc: "Mysql port to use"}
+  - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "Mysql database to use"}
+  - { env_var: "MYSQL_USER", env_value: "<mysql pass>", desc: "Mysql user to use"}
+  - { env_var: "MYSQL_PASSWORD", env_value: "changeme", desc: "Mysql password to use"}
 
 optional_parameters: |
   This container also generates an SSL certificate and stores it in
