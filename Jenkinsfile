@@ -36,6 +36,7 @@ pipeline {
     stage("Set ENV Variables base"){
       steps{
         script{
+          env.EXIT_STATUS = ''
           env.LS_RELEASE = sh(
             script: '''curl -s https://api.github.com/repos/${LS_USER}/${LS_REPO}/releases/latest | jq -r '. | .tag_name' ''',
             returnStdout: true).trim()
@@ -303,6 +304,7 @@ pipeline {
         script{
           env.CI_URL = 'PACKAGE_UPDATE'
           env.RELEASE_LINK = 'PACKAGE_UPDATE'
+          env.EXIT_STATUS = 'ABORTED'
           currentBuild.rawBuild.result = Result.ABORTED
           throw new hudson.AbortException('ABORTED_PACKAGE')
         }
@@ -323,6 +325,7 @@ pipeline {
           env.CI_URL = 'IGNORE_PACKAGECHECK'
           env.RELEASE_LINK = 'IGNORE_PACKAGECHECK'
           currentBuild.rawBuild.result = Result.ABORTED
+          env.EXIT_STATUS = 'ABORTED'
           throw new hudson.AbortException('ABORTED_PACKAGE')
         }
       }
@@ -523,6 +526,7 @@ pipeline {
           env.CI_URL = 'README_UPDATE'
           env.RELEASE_LINK = 'README_UPDATE'
           currentBuild.rawBuild.result = Result.ABORTED
+          env.EXIT_STATUS = 'ABORTED'
           throw new hudson.AbortException('ABORTED_README')
         }
       }
@@ -565,10 +569,11 @@ pipeline {
                  "description": "**Build:**  '${BUILD_NUMBER}'\\n**CI Results:**  '${CI_URL}'\\n**Status:**  Success\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
                  "username": "Jenkins"}' ${BUILDS_DISCORD} '''
         }
-        if (currentBuild.currentResult == "ABORTED"){
+        if (env.EXIT_STATUS == "ABORTED"){
           currentBuild.rawBuild.result = Result.SUCCESS
+          currentBuild.result = 'SUCCESS'
         }
-        if (currentBuild.currentResult == "FAILURE"){
+        else {
           sh ''' curl -X POST --data '{"avatar_url": "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png","embeds": [{"color": 16711680,\
                  "description": "**Build:**  '${BUILD_NUMBER}'\\n**CI Results:**  '${CI_URL}'\\n**Status:**  failure\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
                  "username": "Jenkins"}' ${BUILDS_DISCORD} '''

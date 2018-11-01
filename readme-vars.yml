@@ -100,5 +100,6 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "31.10.18:", desc: "Rebasing to alpine 3.8" }
   - { date: "05.08.18:", desc: "Migration to live build server." }
   - { date: "13.06.18:", desc: "Initial Release." }
