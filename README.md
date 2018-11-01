@@ -60,7 +60,7 @@ docker create \
   -e MYSQL_USER=<mysql pass> \
   -e MYSQL_PASSWORD=changeme \
   -p 8080:80 \
-  -v </path/to/snipe-it/config>:/config \
+  -v <path to snipe-it data>:/config \
   linuxserver/snipe-it
 ```
 
