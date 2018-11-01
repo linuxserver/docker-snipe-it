@@ -276,6 +276,7 @@ pipeline {
               if [ "$(md5sum ${TEMPDIR}/package_versions.txt | cut -c1-8 )" != "${PACKAGE_TAG}" ]; then
                 git clone https://github.com/${LS_USER}/${LS_REPO}.git ${TEMPDIR}/${LS_REPO}
                 cp ${TEMPDIR}/package_versions.txt ${TEMPDIR}/${LS_REPO}/
+                cd ${TEMPDIR}/${LS_REPO}/
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git add package_versions.txt
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git commit -m 'Bot Updating Package Versions'
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git push https://LinuxServer-CI:${GITHUB_TOKEN}@github.com/${LS_USER}/${LS_REPO}.git --all
@@ -491,6 +492,7 @@ pipeline {
               if [ "$(md5sum ${TEMPDIR}/${CONTAINER_NAME}/README.md | awk '{ print $1 }')" != "$(md5sum README.md | awk '{ print $1 }')" ]; then
                 git clone https://github.com/${LS_USER}/${LS_REPO}.git ${TEMPDIR}/${LS_REPO}
                 cp ${TEMPDIR}/${CONTAINER_NAME}/README.md ${TEMPDIR}/${LS_REPO}/
+                cd ${TEMPDIR}/${LS_REPO}/
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git add README.md
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git commit -m 'Bot Updating README from template'
                 git --git-dir ${TEMPDIR}/${LS_REPO}/.git push https://LinuxServer-CI:${GITHUB_TOKEN}@github.com/${LS_USER}/${LS_REPO}.git --all
