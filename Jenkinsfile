@@ -217,10 +217,7 @@ pipeline {
       }
       steps {
         script{
-          env.CI_URL = 'README_UPDATE'
-          env.RELEASE_LINK = 'README_UPDATE'
           env.EXIT_STATUS = 'ABORTED'
-          throw new hudson.AbortException('ABORTED_README')
         }
       }
     }
@@ -231,6 +228,7 @@ pipeline {
     stage('Build-Single') {
       when {
         environment name: 'MULTIARCH', value: 'false'
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         sh "docker build --no-cache -t ${IMAGE}:${META_TAG} \
@@ -241,6 +239,7 @@ pipeline {
     stage('Build-Multi') {
       when {
         environment name: 'MULTIARCH', value: 'true'
+        environment name: 'EXIT_STATUS', value: ''
       }
       parallel {
         stage('Build X86') {
@@ -308,6 +307,7 @@ pipeline {
       when {
         branch "master"
         environment name: 'CHANGE_ID', value: ''
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         sh '''#! /bin/bash
@@ -351,13 +351,11 @@ pipeline {
         branch "master"
         environment name: 'CHANGE_ID', value: ''
         environment name: 'PACKAGE_UPDATED', value: 'true'
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         script{
-          env.CI_URL = 'PACKAGE_UPDATE'
-          env.RELEASE_LINK = 'PACKAGE_UPDATE'
           env.EXIT_STATUS = 'ABORTED'
-          throw new hudson.AbortException('ABORTED_PACKAGE')
         }
       }
     }
@@ -367,16 +365,14 @@ pipeline {
         branch "master"
         environment name: 'CHANGE_ID', value: ''
         environment name: 'PACKAGE_UPDATED', value: 'false'
+        environment name: 'EXIT_STATUS', value: ''
         expression {
           params.PACKAGE_CHECK == 'true'
         }
       }
       steps {
         script{
-          env.CI_URL = 'IGNORE_PACKAGECHECK'
-          env.RELEASE_LINK = 'IGNORE_PACKAGECHECK'
           env.EXIT_STATUS = 'ABORTED'
-          throw new hudson.AbortException('ABORTED_PACKAGE')
         }
       }
     }
@@ -387,6 +383,7 @@ pipeline {
     stage('Test') {
       when {
         environment name: 'CI', value: 'true'
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         withCredentials([
@@ -433,6 +430,7 @@ pipeline {
     stage('Docker-Push-Single') {
       when {
         environment name: 'MULTIARCH', value: 'false'
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         withCredentials([
@@ -457,6 +455,7 @@ pipeline {
     stage('Docker-Push-Multi') {
       when {
         environment name: 'MULTIARCH', value: 'true'
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         withCredentials([
@@ -507,6 +506,7 @@ pipeline {
           env.LS_RELEASE != env.EXT_RELEASE + '-pkg-' + env.PACKAGE_TAG + '-ls' + env.LS_TAG_NUMBER
         }
         environment name: 'CHANGE_ID', value: ''
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         echo "Pushing New tag for current commit ${EXT_RELEASE}-pkg-${PACKAGE_TAG}-ls${LS_TAG_NUMBER}"
@@ -532,6 +532,7 @@ pipeline {
     stage('Sync-README') {
       when {
         environment name: 'CHANGE_ID', value: ''
+        environment name: 'EXIT_STATUS', value: ''
       }
       steps {
         withCredentials([
@@ -561,13 +562,13 @@ pipeline {
   post {
     always {
       script{
-        if (currentBuild.currentResult == "SUCCESS"){
+        if (env.EXIT_STATUS == "ABORTED"){
+          sh 'echo "build aborted"'
+        }
+        else if (currentBuild.currentResult == "SUCCESS"){
           sh ''' curl -X POST --data '{"avatar_url": "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png","embeds": [{"color": 1681177,\
                  "description": "**Build:**  '${BUILD_NUMBER}'\\n**CI Results:**  '${CI_URL}'\\n**Status:**  Success\\n**Job:** '${RUN_DISPLAY_URL}'\\n**Change:** '${CODE_URL}'\\n**External Release:**: '${RELEASE_LINK}'\\n**DockerHub:** '${DOCKERHUB_LINK}'\\n"}],\
                  "username": "Jenkins"}' ${BUILDS_DISCORD} '''
-        }
-        else if (env.EXIT_STATUS == "ABORTED"){
-          currentBuild.result = 'SUCCESS'
         }
         else {
           sh ''' curl -X POST --data '{"avatar_url": "https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png","embeds": [{"color": 16711680,\
