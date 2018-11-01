@@ -114,7 +114,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 80` | Snipe-IT Web UI |
 | `-e PUID=1001` | for UserID - see below for explanation |
 | `-e PGID=1001` | for GroupID - see below for explanation |
-| `-e APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE 192.168.10.1:8080 |
+| `-e APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE <ip or hostname>:8080 |
 | `-e MYSQL_PORT_3306_TCP_ADDR=<mysql host>` | Mysql hostname or IP to use |
 | `-e MYSQL_PORT_3306_TCP_PORT=<mysql port>` | Mysql port to use |
 | `-e MYSQL_DATABASE=<mysql database>` | Mysql database to use |
