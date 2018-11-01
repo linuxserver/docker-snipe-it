@@ -1,83 +1,126 @@
-[linuxserverurl]: https://linuxserver.io
-[forumurl]: https://forum.linuxserver.io
-[ircurl]: https://www.linuxserver.io/irc/
-[podcasturl]: https://www.linuxserver.io/podcast/
-[appurl]: https://github.com/snipe/snipe-it
-[huburl]: https://hub.docker.com/r/linuxserver/snipe-it/
-[localesurl]: https://github.com/snipe/snipe-it/tree/master/resources/lang
+[![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)](https://linuxserver.io)
 
+The [LinuxServer.io](https://linuxserver.io) team brings you another container release featuring :-
 
-[![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png?v=4&s=4000)][linuxserverurl]
+ * regular and timely application updates
+ * easy user mappings (PGID, PUID)
+ * custom base image with s6 overlay
+ * weekly base OS updates with common layers across the entire LinuxServer.io ecosystem to minimise space usage, down time and bandwidth
+ * regular security updates
 
+Find us at:
+* [Discord](https://discord.gg/YWrKVTn) - realtime support / chat with the community and the team.
+* [IRC](https://irc.linuxserver.io) - on freenode at `#linuxserver.io`. Our primary support channel is Discord.
+* [Blog](https://blog.linuxserver.io) - all the things you can do with our containers including How-To guides, opinions and much more!
+* [Podcast](https://anchor.fm/linuxserverio) - on hiatus. Coming back soon (late 2018).
 
-## Contact information:-
+# PSA: Changes are happening
 
-| Type | Address/Details |
-| :---: | --- |
-| Discord | [Discord](https://discord.gg/YWrKVTn) |
-| Forum | [Linuserver.io forum][forumurl] |
-| IRC | freenode at `#linuxserver.io` more information at:- [IRC][ircurl]
-| Podcast | Covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation! [Linuxserver.io Podcast][podcasturl] |
+From August 2018 onwards, Linuxserver are in the midst of switching to a new CI platform which will enable us to build and release multiple architectures under a single repo. To this end, existing images for `arm64` and `armhf` builds are being deprecated. They are replaced by a manifest file in each container which automatically pulls the correct image for your architecture. You'll also be able to pull based on a specific architecture tag.
 
+TLDR: Multi-arch support is changing from multiple repos to one repo per container image.
 
-The [LinuxServer.io][linuxserverurl] team brings you another image release featuring :-
+# [linuxserver/snipe-it](https://github.com/linuxserver/docker-snipe-it)
+[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")
+![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)
+![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)
 
- + regular and timely application updates
- + easy user mappings
- + custom base image with s6 overlay
- + security updates
+[Snipe-it](https://github.com/snipe/snipe-it) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
-# [linuxserver/snipe-it][huburl]
-[![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)][huburl][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/snipe-it.svg)][huburl][![Build Status](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-snipe-it/job/master/badge/icon)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-snipe-it/job/master/)[![CI Status](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/badge.svg)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/snipe-it/latest/index.html)
+[![snipe-it](https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png)](https://github.com/snipe/snipe-it)
 
-Snipe-IT makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
+## Supported Architectures
 
-[![snipe-it](https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png)][appurl]
+Our images support multiple architectures such as `X86-64`, `arm64` and `armhf`. We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list). 
 
-&nbsp;
+The architectures supported by this image are:
+
+| Architecture | Tag |
+| :----: | --- |
+| X86-64 | amd64-latest |
+| arm64 | arm64v8-latest |
+| armhf | arm32v6-latest |
 
 ## Usage
+
+Here are some example snippets to help you get started creating a container.
+
+### docker
 
 ```
 docker create \
   --name=snipe-it \
-  -v <path to data>:/config \
+  -e PUID=1001 \
+  -e PGID=1001 \
   -e APP_URL=<hostname or ip> \
   -e MYSQL_PORT_3306_TCP_ADDR=<mysql host> \
   -e MYSQL_PORT_3306_TCP_PORT=<mysql port> \
   -e MYSQL_DATABASE=<mysql database> \
-  -e MYSQL_USER=<mysql user> \
-  -e MYSQL_PASSWORD=<mysql pass> \
-  -e PGID=<gid> -e PUID=<uid>  \
+  -e MYSQL_USER=<mysql pass> \
+  -e MYSQL_PASSWORD=changeme \
   -p 8080:80 \
+  -v </path/to/snipe-it/config>:/config \
   linuxserver/snipe-it
 ```
 
-&nbsp;
 
-## Required Parameters
+### docker-compose
 
-The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
-For example with a port -p external:internal - what this shows is the port mapping from internal to external of the container.
-So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
-http://192.168.x.x:8080 would show you what's running INSIDE the container on port 80.
+Compatible with docker-compose v2 schemas.
 
+```
+version: "3"
+services:
+  mysql:
+    image: mysql:5
+    container_name: snipe_mysql
+    restart: always
+    volumes:
+      - <path to mysql data>:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=<secret password>
+      - MYSQL_USER=snipe
+      - MYSQL_PASSWORD=<secret user password>
+      - MYSQL_DATABASE=snipe
+  snipeit:
+    image: linuxserver/snipe-it:latest
+    container_name: snipe-it
+    restart: always
+    depends_on:
+      - mysql
+    volumes:
+      - <path to data>:/config
+    environment:
+      - APP_URL=< your application URL IE 192.168.10.1:8080>
+      - MYSQL_PORT_3306_TCP_ADDR=mysql
+      - MYSQL_PORT_3306_TCP_PORT=3306
+      - MYSQL_DATABASE=snipe
+      - MYSQL_USER=snipe
+      - MYSQL_PASSWORD=<secret user password>
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - "8080:80"
 
+```
+
+## Parameters
+
+Container images are configured using parameters passed at runtime (such as those above). These parameters are separated by a colon and indicate `<external>:<internal>` respectively. For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
 
 | Parameter | Function |
-| :---: | --- |
-| `-p 8080` | the port(s) |
-| `-v /config` | Contains your config files and data storage for Snipe-IT|
-| `-e APP_URL=` | Hostname or IP and port if applicable IE 192.168.10.1:8080 |
-| `-e MYSQL_PORT_3306_TCP_ADDR=` | Mysql hostname or IP to use|
-| `-e MYSQL_PORT_3306_TCP_PORT=` | Mysql port to use|
-| `-e MYSQL_DATABASE=` | Mysql database to use|
-| `-e MYSQL_USER=` | Mysql user to use|
-| `-e MYSQL_PASSWORD=` | Mysql password to use|
-| `-e PGID` | for GroupID, see below for explanation |
-| `-e PUID` | for UserID, see below for explanation |
-
-&nbsp;
+| :----: | --- |
+| `-p 80` | Snipe-IT Web UI |
+| `-e PUID=1001` | for UserID - see below for explanation |
+| `-e PGID=1001` | for GroupID - see below for explanation |
+| `-e APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE 192.168.10.1:8080 |
+| `-e MYSQL_PORT_3306_TCP_ADDR=<mysql host>` | Redis port (optional) |
+| `-e MYSQL_PORT_3306_TCP_PORT=<mysql port>` | ElasticSearch host (optional) |
+| `-e MYSQL_DATABASE=<mysql database>` | ElasticSearch port (optional) |
+| `-e MYSQL_USER=<mysql pass>` | ElasticSearch username (optional) |
+| `-e MYSQL_PASSWORD=changeme` | ElasticSearch password (optional) |
+| `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Optional Parameters
 
@@ -94,7 +137,7 @@ To use your own certificate swap these files with yours. To use SSL forward your
 
 The application accepts a series of environment variables to further customize itself on boot:
 
-  | Parameter | Function |
+| Parameter | Function |
 | :---: | --- |
 | `-e APP_TIMEZONE=` | The timezone the application will use IE US/Pacific|
 | `-e APP_ENV=` | Default is production but can use testing or develop|
@@ -109,59 +152,36 @@ The application accepts a series of environment variables to further customize i
 | `-e MAIL_ENV_PASSWORD=` | SMTP server login password|
 
 
-&nbsp;
-
 ## User / Group Identifiers
 
-Sometimes when using volumes (`-v` flags) permissions issues can arise between the host OS and the container, we avoid this issue by allowing you to specify the user `PUID` and group `PGID`.
+When using volumes (`-v` flags) permissions issues can arise between the host OS and the container, we avoid this issue by allowing you to specify the user `PUID` and group `PGID`.
 
-Ensure any volume directories on the host are owned by the same user you specify and it will "just work" &trade;.
+Ensure any volume directories on the host are owned by the same user you specify and any permissions issues will vanish like magic.
 
 In this instance `PUID=1001` and `PGID=1001`, to find yours use `id user` as below:
 
 ```
-  $ id <dockeruser>
+  $ id username
     uid=1001(dockeruser) gid=1001(dockergroup) groups=1001(dockergroup)
 ```
 
 &nbsp;
+## Application Setup
 
-## Setting up the application
+Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
 
-Access the webui at `<your-ip>:8080`, for more information check out [snipe-it][appurl].
 
-&nbsp;
 
-## Container access and information.
+## Support Info
 
-| Function | Command |
-| :--- | :--- |
-| Shell access (live container) | `docker exec -it snipe-it /bin/bash` |
-| Realtime container logs | `docker logs -f snipe-it` |
-| Container version number | `docker inspect -f '{{ index .Config.Labels "build_version" }}' snipe-it` |
-| Image version number |  `docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/snipe-it` |
-
-&nbsp;
-
-## Supported Architectures
-
-Our images support multiple architectures such as `X86-64`, `arm64` and `armhf`. We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
-
-The architectures supported by this image are:
-
-| Architecture | Tag |
-| :----: | --- |
-| X86-64 | amd64-latest |
-| armhf | arm32v6-latest |
-| arm64 | arm64v8-latest |
-
-You can use the "latest" tag on any architecture, the docker client will automatically pull the correct image.
-
-&nbsp;
+* Shell access whilst the container is running: `docker exec -it snipe-it /bin/bash`
+* To monitor the logs of the container in realtime: `docker logs -f snipe-it`
+* container version number 
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' snipe-it`
+* image version number
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/snipe-it`
 
 ## Versions
 
-|  Date | Changes |
-| :---: | --- |
-| 05.08.18 |  Migration to live build server. |
-| 13.06.18 |  Initial Release. |
+* **05.08.18:** - Migration to live build server.
+* **13.06.18:** - Initial Release.

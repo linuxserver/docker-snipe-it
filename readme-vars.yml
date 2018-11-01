@@ -1,0 +1,104 @@
+---
+
+# project information
+project_name: snipe-it
+project_url: "https://github.com/snipe/snipe-it"
+project_logo: "https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png"
+project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster."
+project_lsio_github_repo_url: "https://github.com/linuxserver/docker-{{ project_name }}"
+
+# supported architectures
+available_architectures:
+  - { arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
+  - { arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
+  - { arch: "{{ arch_armhf }}", tag: "arm32v6-latest"}
+
+# container parameters
+common_param_env_vars_enabled: true #PGID, PUID, etc
+param_container_name: "{{ project_name }}"
+param_usage_include_vols: true
+param_volumes:
+  - { vol_path: "/config", vol_host_path: "</path/to/{{ project_name }}/config>", desc: "Contains your config files and data storage for Snipe-IT" }
+param_usage_include_ports: true
+param_ports:
+  - { external_port: "8080", internal_port: "80", port_desc: "Snipe-IT Web UI" }
+param_usage_include_env: true
+param_env_vars:
+  - { env_var: "APP_URL", env_value: "<hostname or ip>", desc: "Hostname or IP and port if applicable IE 192.168.10.1:8080"}
+  - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "<mysql host>", desc: "Redis port (optional)"}
+  - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "<mysql port>", desc: "ElasticSearch host (optional)"}
+  - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "ElasticSearch port (optional)"}
+  - { env_var: "MYSQL_USER", env_value: "<mysql pass>", desc: "ElasticSearch username (optional)"}
+  - { env_var: "MYSQL_PASSWORD", env_value: "changeme", desc: "ElasticSearch password (optional)"}
+
+optional_parameters: |
+  This container also generates an SSL certificate and stores it in
+  ```
+  /config/keys/cert.crt
+  /config/keys/key.crt
+  ```
+  To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
+
+  ```
+  -p 443:443
+  ```
+
+  The application accepts a series of environment variables to further customize itself on boot:
+
+  | Parameter | Function |
+  | :---: | --- |
+  | `-e APP_TIMEZONE=` | The timezone the application will use IE US/Pacific|
+  | `-e APP_ENV=` | Default is production but can use testing or develop|
+  | `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|
+  | `-e APP_LOCALE=` | Default is en set to the language preferred full list [here][localesurl]|
+  | `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|
+  | `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|
+  | `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|
+  | `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system|
+  | `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use IE tls |
+  | `-e MAIL_ENV_USERNAME=` | SMTP server login username|
+  | `-e MAIL_ENV_PASSWORD=` | SMTP server login password|
+
+custom_compose: |
+  version: "3"
+  services:
+    mysql:
+      image: mysql:5
+      container_name: snipe_mysql
+      restart: always
+      volumes:
+        - <path to mysql data>:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=<secret password>
+        - MYSQL_USER=snipe
+        - MYSQL_PASSWORD=<secret user password>
+        - MYSQL_DATABASE=snipe
+    snipeit:
+      image: linuxserver/snipe-it:latest
+      container_name: snipe-it
+      restart: always
+      depends_on:
+        - mysql
+      volumes:
+        - <path to data>:/config
+      environment:
+        - APP_URL=< your application URL IE 192.168.10.1:8080>
+        - MYSQL_PORT_3306_TCP_ADDR=mysql
+        - MYSQL_PORT_3306_TCP_PORT=3306
+        - MYSQL_DATABASE=snipe
+        - MYSQL_USER=snipe
+        - MYSQL_PASSWORD=<secret user password>
+        - PGID=1000
+        - PUID=1000
+      ports:
+        - "8080:80"
+
+# application setup block
+app_setup_block_enabled: true
+app_setup_block: |
+  Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
+
+# changelog
+changelogs:
+  - { date: "05.08.18:", desc: "Migration to live build server." }
+  - { date: "13.06.18:", desc: "Initial Release." }
