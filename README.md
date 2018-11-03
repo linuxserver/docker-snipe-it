@@ -21,6 +21,7 @@ From August 2018 onwards, Linuxserver are in the midst of switching to a new CI 
 TLDR: Multi-arch support is changing from multiple repos to one repo per container image.
 
 # [linuxserver/snipe-it](https://github.com/linuxserver/docker-snipe-it)
+[![](https://img.shields.io/discord/354974912613449730.svg?logo=discord&label=LSIO%20Discord&style=flat-square)](https://discord.gg/YWrKVTn)
 [![](https://images.microbadger.com/badges/version/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/linuxserver/snipe-it.svg)](https://microbadger.com/images/linuxserver/snipe-it "Get your own version badge on microbadger.com")
 ![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/snipe-it.svg)
@@ -61,6 +62,7 @@ docker create \
   -e MYSQL_PASSWORD=changeme \
   -p 8080:80 \
   -v <path to snipe-it data>:/config \
+  --restart unless-stopped
   linuxserver/snipe-it
 ```
 
