@@ -62,7 +62,7 @@ docker create \
   -e MYSQL_PASSWORD=changeme \
   -p 8080:80 \
   -v <path to snipe-it data>:/config \
-  --restart unless-stopped
+  --restart unless-stopped \
   linuxserver/snipe-it
 ```
 
