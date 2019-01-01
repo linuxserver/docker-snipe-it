@@ -86,7 +86,7 @@ php7-mcrypt php7-mcrypt-1.0.1-r0
 php7-pdo php7-pdo-7.2.13-r0
 php7-mysqlnd php7-mysqlnd-7.2.13-r0
 php7-pdo_mysql php7-pdo_mysql-7.2.13-r0
-sqlite-libs sqlite-libs-3.24.0-r0
+sqlite-libs sqlite-libs-3.25.3-r0
 php7-pdo_sqlite php7-pdo_sqlite-7.2.13-r0
 php7-phar php7-phar-7.2.13-r0
 php7-sqlite3 php7-sqlite3-7.2.13-r0
