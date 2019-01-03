@@ -78,7 +78,7 @@ libjpeg-turbo libjpeg-turbo-1.5.3-r3
 libwebp libwebp-1.0.0-r0
 php7-gd php7-gd-7.2.13-r0
 db db-5.3.28-r0
-libsasl libsasl-2.1.26-r13
+libsasl libsasl-2.1.26-r14
 libldap libldap-2.4.46-r0
 php7-ldap php7-ldap-7.2.13-r0
 libmcrypt libmcrypt-2.5.8-r7
