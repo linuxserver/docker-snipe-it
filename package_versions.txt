@@ -95,5 +95,5 @@ php7-dom php7-dom-7.2.13-r0
 php7-xmlreader php7-xmlreader-7.2.13-r0
 libzip libzip-1.5.1-r1
 php7-zip php7-zip-7.2.13-r0
-tar tar-1.30-r0
+tar tar-1.31-r0
 unzip unzip-6.0-r4
