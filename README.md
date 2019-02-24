@@ -210,6 +210,7 @@ Below are the instructions for updating containers:
 
 ## Versions
 
+* **22.02.19:** - Rebasing to alpine 3.9.
 * **31.10.18:** - Rebasing to alpine 3.8
 * **05.08.18:** - Migration to live build server.
 * **13.06.18:** - Initial Release.
