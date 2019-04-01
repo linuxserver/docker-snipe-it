@@ -11,6 +11,7 @@ RUN \
  apk add --no-cache \
 	curl \
 	libxml2 \
+	mariadb-client \
 	php7-bcmath \
 	php7-ctype \
 	php7-curl \
