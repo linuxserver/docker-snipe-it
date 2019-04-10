@@ -47,7 +47,7 @@ RUN \
 	"https://github.com/snipe/snipe-it/archive/${SNIPEIT_RELEASE}.tar.gz" && \
  tar xf \
  /tmp/snipeit.tar.gz -C \
-	var/www/html/ --strip-components=1 && \
+	/var/www/html/ --strip-components=1 && \
  cp /var/www/html/docker/docker.env /var/www/html/.env && \
  echo "**** move storage directories to defaults ****" && \
  mv \
