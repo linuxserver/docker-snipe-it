@@ -100,6 +100,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "10.04.19:", desc: "Fix permissions for new bootstrap cache directory." }
   - { date: "23.03.19:", desc: "Switching to new Base images, shift to arm32v7 tag." }
   - { date: "22.02.19:", desc: "Rebasing to alpine 3.9." }
   - { date: "31.10.18:", desc: "Rebasing to alpine 3.8" }

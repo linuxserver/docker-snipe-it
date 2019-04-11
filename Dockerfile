@@ -39,8 +39,8 @@ RUN \
  mkdir -p \
 	/var/www/html/ && \
  if [ -z ${SNIPEIT_RELEASE+x} ]; then \
- 	SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/snipe/snipe-it/releases/latest" \
-        | awk '/tag_name/{print $4;exit}' FS='[""]'); \
+	SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/snipe/snipe-it/releases/latest" \
+	| awk '/tag_name/{print $4;exit}' FS='[""]'); \
  fi && \
  curl -o \
  /tmp/snipeit.tar.gz -L \
