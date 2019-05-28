@@ -100,6 +100,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "10.04.19:", desc: "Add php deps for V4.7.0, ensure framework directories are available at build time." }
   - { date: "10.04.19:", desc: "Fix permissions for new bootstrap cache directory." }
   - { date: "23.03.19:", desc: "Switching to new Base images, shift to arm32v7 tag." }
   - { date: "22.02.19:", desc: "Rebasing to alpine 3.9." }
