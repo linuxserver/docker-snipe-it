@@ -17,6 +17,7 @@ RUN \
 	php7-ctype \
 	php7-curl \
 	php7-gd \
+	php7-iconv \
 	php7-ldap \
 	php7-mbstring \
 	php7-mcrypt \
@@ -49,16 +50,16 @@ RUN \
  /tmp/snipeit.tar.gz -C \
 	/var/www/html/ --strip-components=1 && \
  cp /var/www/html/docker/docker.env /var/www/html/.env && \
- echo "**** move storage directories to defaults ****" && \
- mv \
-	"/var/www/html/storage" \
-	"/var/www/html/public/uploads" \
- /defaults/ && \
  echo "**** install dependencies ****" && \
  cd /tmp && \
  curl -sS https://getcomposer.org/installer | php && \
  mv /tmp/composer.phar /usr/local/bin/composer && \
  composer install -d /var/www/html && \
+ echo "**** move storage directories to defaults ****" && \
+ mv \
+        "/var/www/html/storage" \
+        "/var/www/html/public/uploads" \
+ /defaults/ && \
  echo "**** cleanup ****" && \
  rm -rf \
 	/root/.composer \
