@@ -100,6 +100,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "19.12.19:", desc: "Rebasing to alpine 3.11." }
   - { date: "28.06.19:", desc: "Rebasing to alpine 3.10." }
   - { date: "10.04.19:", desc: "Add php deps for V4.7.0, ensure framework directories are available at build time." }
   - { date: "10.04.19:", desc: "Fix permissions for new bootstrap cache directory." }
