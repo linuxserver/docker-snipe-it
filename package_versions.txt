@@ -26,7 +26,7 @@ libedit-20191211.3.1-r0
 libgcc-9.2.0-r4
 libice-1.0.10-r0
 libintl-0.20.1-r2
-libjpeg-turbo-2.0.4-r0
+libjpeg-turbo-2.0.4-r1
 libldap-2.4.48-r2
 libmagic-5.37-r1
 libmcrypt-2.5.8-r7
