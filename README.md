@@ -73,12 +73,15 @@ Compatible with docker-compose v2 schemas.
 version: "3"
 services:
   mysql:
-    image: mysql:5
+    image: linuxserver/mariadb
     container_name: snipe_mysql
     restart: always
     volumes:
-      - <path to mysql data>:/var/lib/mysql
+      - <path to mysql data>:/config
     environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
       - MYSQL_ROOT_PASSWORD=<secret password>
       - MYSQL_USER=snipe
       - MYSQL_PASSWORD=<secret user password>
