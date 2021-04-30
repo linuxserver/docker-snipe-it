@@ -44,7 +44,7 @@ chown -R abc:abc \
 	/var/www/html/bootstrap/cache
 
 # add server name to nginx config
-sed -i "s/APP_URL_PLACEHOLDER/${APP_URL}/g" /config/nginx/site-confs/default
+sed -i "s/APP_URL_PLACEHOLDER/${NGINX_APP_URL}/g" /config/nginx/site-confs/default
 
 # If the Oauth DB files are not present copy the vendor files over to the db migrations
 if [ ! -f "/var/www/html/database/migrations/*create_oauth*" ]; then

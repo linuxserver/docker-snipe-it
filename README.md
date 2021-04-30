@@ -95,7 +95,7 @@ services:
     volumes:
       - <path to data>:/config
     environment:
-      - APP_URL=< your application URL IE 192.168.10.1:8080>
+      - NGINX_APP_URL=< your application URL IE 192.168.10.1:8080>
       - MYSQL_PORT_3306_TCP_ADDR=mysql
       - MYSQL_PORT_3306_TCP_PORT=3306
       - MYSQL_DATABASE=snipe
@@ -115,7 +115,7 @@ docker run -d \
   --name=snipe-it \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e APP_URL=<hostname or ip> \
+  -e NGINX_APP_URL=<hostname or ip> \
   -e MYSQL_PORT_3306_TCP_ADDR=<mysql host> \
   -e MYSQL_PORT_3306_TCP_PORT=<mysql port> \
   -e MYSQL_DATABASE=<mysql database> \
@@ -136,7 +136,7 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 80` | Snipe-IT Web UI |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
-| `-e APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE <ip or hostname>:8080 |
+| `-e NGINX_APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE <ip or hostname>:8080 |
 | `-e MYSQL_PORT_3306_TCP_ADDR=<mysql host>` | Mysql hostname or IP to use |
 | `-e MYSQL_PORT_3306_TCP_PORT=<mysql port>` | Mysql port to use |
 | `-e MYSQL_DATABASE=<mysql database>` | Mysql database to use |
