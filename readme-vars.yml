@@ -24,7 +24,7 @@ param_ports:
   - { external_port: "8080", internal_port: "80", port_desc: "Snipe-IT Web UI" }
 param_usage_include_env: true
 param_env_vars:
-  - { env_var: "APP_URL", env_value: "<hostname or ip>", desc: "Hostname or IP and port if applicable IE <ip or hostname>:8080"}
+  - { env_var: "NGINX_APP_URL", env_value: "<hostname or ip>", desc: "Hostname or IP and port if applicable IE <ip or hostname>:8080"}
   - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "<mysql host>", desc: "Mysql hostname or IP to use"}
   - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "<mysql port>", desc: "Mysql port to use"}
   - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "Mysql database to use"}
@@ -85,7 +85,7 @@ custom_compose: |
       volumes:
         - <path to data>:/config
       environment:
-        - APP_URL=< your application URL IE 192.168.10.1:8080>
+        - NGINX_APP_URL=< your application URL IE 192.168.10.1:8080>
         - MYSQL_PORT_3306_TCP_ADDR=mysql
         - MYSQL_PORT_3306_TCP_PORT=3306
         - MYSQL_DATABASE=snipe
