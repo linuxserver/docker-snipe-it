@@ -50,3 +50,8 @@ sed -i "s/APP_URL_PLACEHOLDER/${APP_URL}/g" /config/nginx/site-confs/default
 if [ ! -f "/var/www/html/database/migrations/*create_oauth*" ]; then
   cp -ax /var/www/html/vendor/laravel/passport/database/migrations/* /var/www/html/database/migrations/
 fi
+
+# If this container is setup run migrate
+if [ -f /config/storage/oauth-public.key ]; then
+  php /var/www/html/artisan migrate --force
+fi
