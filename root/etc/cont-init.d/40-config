@@ -46,6 +46,10 @@ chown -R abc:abc \
 # add server name to nginx config
 sed -i "s/APP_URL_PLACEHOLDER/${NGINX_APP_URL}/g" /config/nginx/site-confs/default
 
+# set PHP variables
+sed -i "s/#PHP_POST_MAX_SIZE_PLACEHOLDER#/${PHP_POST_MAX_SIZE:-8M}/" /etc/php7/conf.d/snipe-local.ini
+sed -i "s/#PHP_UPLOAD_MAX_FILESIZE_PLACEHOLDER#/${PHP_UPLOAD_MAX_FILESIZE:-2M}/" /etc/php7/conf.d/snipe-local.ini
+
 # If the Oauth DB files are not present copy the vendor files over to the db migrations
 if [ ! -f "/var/www/html/database/migrations/*create_oauth*" ]; then
   cp -ax /var/www/html/vendor/laravel/passport/database/migrations/* /var/www/html/database/migrations/
