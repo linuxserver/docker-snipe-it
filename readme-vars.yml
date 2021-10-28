@@ -30,6 +30,9 @@ param_env_vars:
   - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "Mysql database to use"}
   - { env_var: "MYSQL_USER", env_value: "<mysql pass>", desc: "Mysql user to use"}
   - { env_var: "MYSQL_PASSWORD", env_value: "changeme", desc: "Mysql password to use"}
+  - { env_var: "PHP_MAX_UPLOAD_FILESIZE", env_value: "changeme", desc: "php max_upload_filesize value, default 2M"}
+  - { env_var: "PHP_POST_MAX_SIZE", env_value: "changeme", desc: "php post_max_size value, default 8M"}
+
 
 optional_parameters: |
   This container also generates an SSL certificate and stores it in
@@ -93,6 +96,8 @@ custom_compose: |
         - MYSQL_PASSWORD=<secret user password>
         - PGID=1000
         - PUID=1000
+        - PHP_MAX_UPLOAD_FILESIZE=2M
+        - PHP_POST_MAX_SIZE=8M
       ports:
         - "8080:80"
 

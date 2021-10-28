@@ -101,6 +101,8 @@ services:
       - MYSQL_PASSWORD=<secret user password>
       - PGID=1000
       - PUID=1000
+      - PHP_MAX_UPLOAD_FILESIZE=2M
+      - PHP_POST_MAX_SIZE=8M
     ports:
       - "8080:80"
 
@@ -119,6 +121,8 @@ docker run -d \
   -e MYSQL_DATABASE=<mysql database> \
   -e MYSQL_USER=<mysql pass> \
   -e MYSQL_PASSWORD=changeme \
+  -e PHP_MAX_UPLOAD_FILESIZE=<size>M \
+  -e PHP_POST_MAX_SIZE=<size>M \
   -p 8080:80 \
   -v <path to snipe-it data>:/config \
   --restart unless-stopped \
@@ -140,6 +144,8 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-e MYSQL_DATABASE=<mysql database>` | Mysql database to use |
 | `-e MYSQL_USER=<mysql pass>` | Mysql user to use |
 | `-e MYSQL_PASSWORD=changeme` | Mysql password to use |
+| `-e PHP_MAX_UPLOAD_FILESIZE=<size>M` | Maximum size of uploaded file size in php, default 2M |
+| `-e PHP_POST_MAX_SIZE=<size>M` | Maximum size of http POST request in php, default 8M |
 | `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Environment variables from files (Docker secrets)
