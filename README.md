@@ -61,6 +61,42 @@ The architectures supported by this image are:
 ## Application Setup
 
 Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
+**This container requires a MySQL or MariaDB server to connect to, we reccomend [ours](https://github.com/linuxserver/docker-mariadb)**
+
+This container also generates an SSL certificate and stores it in
+```
+/config/keys/cert.crt
+/config/keys/key.crt
+```
+To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
+
+```
+-p 443:443
+```
+
+The application accepts a series of environment variables to further customize itself on boot:
+
+| Parameter | Function |
+| :---: | --- |
+| `-e APP_ENV=` | Default is production but can use testing or develop|
+| `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|
+| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here](https://snipe-it.readme.io/docs/configuration#section-setting-a-language)|
+| `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|
+| `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|
+| `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|
+| `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system|
+| `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use IE tls |
+| `-e MAIL_ENV_USERNAME=` | SMTP server login username|
+| `-e MAIL_ENV_PASSWORD=` | SMTP server login password|
+
+### PHP customization
+
+This image uses our NGINX base image all configuration files for PHP and NGINX are located in `/config/php`. To overide any defaults please modify `/config/php/php-local.ini` IE for upload size: 
+
+```
+upload_max_filesize = 16
+post_max_size = 16M
+```
 
 ## Usage
 
@@ -69,42 +105,27 @@ Here are some example snippets to help you get started creating a container.
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
-version: "3"
+---
+version: "2.1"
 services:
-  mysql:
-    image: linuxserver/mariadb
-    container_name: snipe_mysql
-    restart: always
-    volumes:
-      - <path to mysql data>:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - MYSQL_ROOT_PASSWORD=<secret password>
-      - MYSQL_USER=snipe
-      - MYSQL_PASSWORD=<secret user password>
-      - MYSQL_DATABASE=snipe
-  snipeit:
-    image: linuxserver/snipe-it:latest
+  snipe-it:
+    image: lscr.io/linuxserver/snipe-it
     container_name: snipe-it
-    restart: always
-    depends_on:
-      - mysql
-    volumes:
-      - <path to data>:/config
     environment:
-      - NGINX_APP_URL=< your application URL IE 192.168.10.1:8080>
-      - MYSQL_PORT_3306_TCP_ADDR=mysql
-      - MYSQL_PORT_3306_TCP_PORT=3306
-      - MYSQL_DATABASE=snipe
-      - MYSQL_USER=snipe
-      - MYSQL_PASSWORD=<secret user password>
-      - PGID=1000
       - PUID=1000
+      - PGID=1000
+      - APP_URL=http://localhost:8080
+      - MYSQL_PORT_3306_TCP_ADDR=<mysql host>
+      - MYSQL_PORT_3306_TCP_PORT=<mysql port>
+      - MYSQL_DATABASE=<mysql database>
+      - MYSQL_USER=<mysql pass>
+      - MYSQL_PASSWORD=changeme
+      - TZ=US/Pacific
+    volumes:
+      - <path to snipe-it data>:/config
     ports:
-      - "8080:80"
-
+      - 8080:80
+    restart: unless-stopped
 ```
 
 ### docker cli ([click here for more info](https://docs.docker.com/engine/reference/commandline/cli/))
@@ -114,12 +135,13 @@ docker run -d \
   --name=snipe-it \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e NGINX_APP_URL=<hostname or ip> \
+  -e APP_URL=http://localhost:8080 \
   -e MYSQL_PORT_3306_TCP_ADDR=<mysql host> \
   -e MYSQL_PORT_3306_TCP_PORT=<mysql port> \
   -e MYSQL_DATABASE=<mysql database> \
   -e MYSQL_USER=<mysql pass> \
   -e MYSQL_PASSWORD=changeme \
+  -e TZ=US/Pacific \
   -p 8080:80 \
   -v <path to snipe-it data>:/config \
   --restart unless-stopped \
@@ -135,12 +157,13 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 80` | Snipe-IT Web UI |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
-| `-e NGINX_APP_URL=<hostname or ip>` | Hostname or IP and port if applicable IE <ip or hostname>:8080 |
+| `-e APP_URL=http://localhost:8080` | Hostname or IP and port if applicable, be sure to define https/http |
 | `-e MYSQL_PORT_3306_TCP_ADDR=<mysql host>` | Mysql hostname or IP to use |
 | `-e MYSQL_PORT_3306_TCP_PORT=<mysql port>` | Mysql port to use |
 | `-e MYSQL_DATABASE=<mysql database>` | Mysql database to use |
 | `-e MYSQL_USER=<mysql pass>` | Mysql user to use |
 | `-e MYSQL_PASSWORD=changeme` | Mysql password to use |
+| `-e TZ=US/Pacific` | Specify a timezone to use EG Europe/London, this is required to run snipe-it |
 | `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Environment variables from files (Docker secrets)
@@ -159,35 +182,6 @@ Will set the environment variable `PASSWORD` based on the contents of the `/run/
 
 For all of our images we provide the ability to override the default umask settings for services started within the containers using the optional `-e UMASK=022` setting.
 Keep in mind umask is not chmod it subtracts from permissions based on it's value it does not add. Please read up [here](https://en.wikipedia.org/wiki/Umask) before asking for support.
-
-## Optional Parameters
-
-This container also generates an SSL certificate and stores it in
-```
-/config/keys/cert.crt
-/config/keys/key.crt
-```
-To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
-
-```
--p 443:443
-```
-
-The application accepts a series of environment variables to further customize itself on boot:
-
-| Parameter | Function |
-| :---: | --- |
-| `-e APP_TIMEZONE=` | The timezone the application will use IE US/Pacific|
-| `-e APP_ENV=` | Default is production but can use testing or develop|
-| `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|
-| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here][localesurl]|
-| `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|
-| `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|
-| `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|
-| `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system|
-| `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use IE tls |
-| `-e MAIL_ENV_USERNAME=` | SMTP server login username|
-| `-e MAIL_ENV_PASSWORD=` | SMTP server login password|
 
 ## User / Group Identifiers
 
@@ -281,6 +275,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **02.03.22:** - Rework init logic, do not show default compose.
 * **29.06.21:** - Rebasing to alpine 3.14.
 * **30.04.21:** - Rebasing to alpine 3.13, add artisan migrate on spinup.
 * **01.06.20:** - Rebasing to alpine 3.12.
