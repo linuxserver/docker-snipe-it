@@ -7,9 +7,6 @@ ARG SNIPEIT_RELEASE
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="TheLamer"
 
-ENV NGINX_APP_URL=localhost:8080 \
-    DATABASE=mysql
-
 RUN \
   echo "**** install runtime packages ****" && \
   apk add --no-cache \
