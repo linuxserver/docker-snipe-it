@@ -54,7 +54,7 @@ RUN \
   cd /tmp && \
   curl -sS https://getcomposer.org/installer | php && \
   mv /tmp/composer.phar /usr/local/bin/composer && \
-  composer install -d /var/www/html && \
+  composer install --no-dev -d /var/www/html && \
   echo "**** move storage directories to defaults ****" && \
   mv \
     "/var/www/html/storage" \
