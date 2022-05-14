@@ -39,6 +39,7 @@ libressl3.3-libssl-3.3.6-r0
 libretls-3.3.3p1-r3
 libsasl-2.1.28-r0
 libsm-1.2.3-r0
+libsodium-1.0.18-r0
 libssl1.1-1.1.1n-r0
 libstdc++-10.3.1_git20210424-r2
 libuuid-2.37.4-r0
@@ -89,6 +90,7 @@ php7-pecl-mcrypt-1.0.4-r0
 php7-phar-7.4.26-r0
 php7-session-7.4.26-r0
 php7-simplexml-7.4.26-r0
+php7-sodium-7.4.26-r0
 php7-sqlite3-7.4.26-r0
 php7-tokenizer-7.4.26-r0
 php7-xml-7.4.26-r0
