@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-alpine-nginx:3.14
+FROM ghcr.io/linuxserver/baseimage-alpine-nginx:3.15
 
 # set version label
 ARG BUILD_DATE
@@ -13,29 +13,32 @@ RUN \
     curl \
     libxml2 \
     mariadb-client \
-    php7-bcmath \
-    php7-ctype \
-    php7-curl \
-    php7-gd \
-    php7-iconv \
-    php7-ldap \
-    php7-mbstring \
-    php7-mcrypt \
-    php7-phar \
-    php7-pdo_mysql \
-    php7-pdo_sqlite \
-    php7-sqlite3 \
-    php7-tokenizer \
-    php7-xml \
-    php7-xmlreader \
-    php7-zip \
+    php8-bcmath \
+    php8-ctype \
+    php8-curl \
+    php8-fileinfo \
+    php8-gd \
+    php8-iconv \
+    php8-ldap \
+    php8-mbstring \
+    php8-openssl \
+    php8-pdo \
+    php8-pdo_mysql \
+    php8-pdo_sqlite \
+    php8-phar \
+    php8-sodium \
+    php8-sqlite3 \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlreader \
+    php8-zip \
     tar \
     unzip && \
   echo "**** configure php-fpm to pass env vars ****" && \
   sed -i \
     's/;clear_env = no/clear_env = no/g' \
-    /etc/php7/php-fpm.d/www.conf && \
-  echo "env[PATH] = /usr/local/bin:/usr/bin:/bin" >> /etc/php7/php-fpm.conf && \
+    /etc/php8/php-fpm.d/www.conf && \
+  echo "env[PATH] = /usr/local/bin:/usr/bin:/bin" >> /etc/php8/php-fpm.conf && \
   echo "**** install snipe-it ****" && \
   mkdir -p \
     /var/www/html/ && \
