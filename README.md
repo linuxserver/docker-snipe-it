@@ -66,7 +66,7 @@ Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](
 This container also generates an SSL certificate and stores it in
 ```
 /config/keys/cert.crt
-/config/keys/key.crt
+/config/keys/cert.key
 ```
 To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
 
