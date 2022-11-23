@@ -8,21 +8,21 @@ mkdir -p \
 # copy config files
 PREV_DIR=$(pwd)
 
-    cd /defaults/storage || exit 1
-    shopt -s globstar nullglob
-    for i in *; do
-        if [[ ! -e "/config/storage/${i}" ]]; then
-            cp -r "${i}" "/config/storage/${i}"
-        fi
-    done
+cd /defaults/storage || exit 1
+shopt -s globstar nullglob
+for i in *; do
+    if [[ ! -e "/config/storage/${i}" ]]; then
+        cp -r "${i}" "/config/storage/${i}"
+    fi
+done
 
-    cd /defaults/uploads || exit 1
-    shopt -s globstar nullglob
-    for i in *; do
-        if [[ ! -e "/config/uploads/${i}" ]]; then
-            cp -r "${i}" "/config/uploads/${i}"
-        fi
-    done
+cd /defaults/uploads || exit 1
+shopt -s globstar nullglob
+for i in *; do
+    if [[ ! -e "/config/uploads/${i}" ]]; then
+        cp -r "${i}" "/config/uploads/${i}"
+    fi
+done
 cd "${PREV_DIR}" || exit 1
 
 # make symlinks
@@ -34,12 +34,11 @@ if [[ ! -L /app/www/public/uploads ]]; then
 fi
 
 # Create API key if needed
-if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]
-then
+if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]; then
     echo "Generating SnipeIT app key for first run"
     key=$(php /app/www/artisan key:generate --show)
-    echo $key > /config/SNIPE_IT_APP_KEY.txt
-    echo "App Key set to $key you can modify the file to update /config/SNIPE_IT_APP_KEY.txt"
+    echo "${key}" >/config/SNIPE_IT_APP_KEY.txt
+    echo "App Key set to ${key} you can modify the file to update /config/SNIPE_IT_APP_KEY.txt"
 fi
 
 # permissions
@@ -48,14 +47,18 @@ chown -R abc:abc \
     /app/www/bootstrap/cache
 
 # add server name to nginx config while handling legacy settings
-if [ ! -z ${NGINX_APP_URL+x} ]; then
+if [[ -n ${NGINX_APP_URL+x} ]]; then
     REPLACE_URL=${NGINX_APP_URL}
 fi
-if [ ! -z ${NGINX_APP_URL+x} ] && [ -z ${APP_URL+x} ]; then
-    printf "http://${NGINX_APP_URL}" > /run/s6/container_environment/APP_URL
+if [[ -n ${NGINX_APP_URL+x} ]] && [[ -z ${APP_URL+x} ]]; then
+    echo "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
 fi
-if [ -z ${NGINX_APP_URL+x} ] && [ ! -z ${APP_URL+x} ]; then
-    REPLACE_URL=$(echo ${APP_URL} | awk -F/ '{print $3}')
+if [[ -z ${NGINX_APP_URL+x} ]] && [[ -n ${APP_URL+x} ]]; then
+    REPLACE_URL=$(echo "${APP_URL}" | awk -F/ '{print $3}')
+fi
+if [[ -z ${REPLACE_URL+x} ]]; then
+    echo "APP_URL variable not set. Please set the variable and recreate the container."
+    sleep infinity
 fi
 sed -i "s/APP_URL_PLACEHOLDER/${REPLACE_URL}/g" /config/nginx/site-confs/default.conf
 
@@ -70,6 +73,6 @@ if [ -f /config/storage/oauth-public.key ]; then
 fi
 
 # copy over timezone env var
-if [ ! -z ${TZ+x} ]; then
-    printf ${TZ} > /run/s6/container_environment/APP_TIMEZONE
+if [[ -n ${TZ+x} ]]; then
+    echo "${TZ}" >/run/s6/container_environment/APP_TIMEZONE
 fi
