@@ -41,7 +41,7 @@ app_setup_block: |
   This container also generates an SSL certificate and stores it in
   ```
   /config/keys/cert.crt
-  /config/keys/key.crt
+  /config/keys/cert.key
   ```
   To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
 
@@ -75,6 +75,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "20.08.22:", desc: "Rebasing to alpine 3.15 with php8. Restructure nginx configs ([see changes announcement](https://info.linuxserver.io/issues/2022-08-20-nginx-base))." }
   - { date: "14.05.22:", desc: "Add php7-sodium for v6." }
   - { date: "12.04.22:", desc: "Don't build development elements." }
   - { date: "02.03.22:", desc: "Rework init logic, do not show default compose." }

@@ -2,68 +2,77 @@
 
 # create folders
 mkdir -p \
-  /config/storage \
-  /config/uploads
+    /config/storage \
+    /config/uploads
 
 # copy config files
 PREV_DIR=$(pwd)
 
-cd /defaults/storage || exit
+cd /defaults/storage || exit 1
 shopt -s globstar nullglob
 for i in *; do
-  [[ ! -e "/config/storage/${i}" ]] && cp -r "${i}" "/config/storage/${i}"
+    if [[ ! -e "/config/storage/${i}" ]]; then
+        cp -r "${i}" "/config/storage/${i}"
+    fi
 done
 
-cd /defaults/uploads || exit
+cd /defaults/uploads || exit 1
 shopt -s globstar nullglob
 for i in *; do
-  [[ ! -e "/config/uploads/${i}" ]] && cp -r "${i}" "/config/uploads/${i}"
+    if [[ ! -e "/config/uploads/${i}" ]]; then
+        cp -r "${i}" "/config/uploads/${i}"
+    fi
 done
-cd "${PREV_DIR}" || exit
+cd "${PREV_DIR}" || exit 1
 
 # make symlinks
-[[ ! -L /var/www/html/storage ]] && \
-  ln -sf /config/storage /var/www/html/storage
-[[ ! -L /var/www/html/public/uploads ]] && \
-  ln -sf /config/uploads /var/www/html/public/uploads
+if [[ ! -L /app/www/storage ]]; then
+    ln -sf /config/storage /app/www/storage
+fi
+if [[ ! -L /app/www/public/uploads ]]; then
+    ln -sf /config/uploads /app/www/public/uploads
+fi
 
-# create API key if needed
-if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]
-then
-  echo "Generating SnipeIT app key for first run"
-  key=$(php /var/www/html/artisan key:generate --show)
-  echo $key > /config/SNIPE_IT_APP_KEY.txt
-  echo "App Key set to $key you can modify the file to update /config/SNIPE_IT_APP_KEY.txt"
+# Create API key if needed
+if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]; then
+    echo "Generating SnipeIT app key for first run"
+    key=$(php /app/www/artisan key:generate --show)
+    echo "${key}" >/config/SNIPE_IT_APP_KEY.txt
+    echo "App Key set to ${key} you can modify the file to update /config/SNIPE_IT_APP_KEY.txt"
 fi
 
 # permissions
 chown -R abc:abc \
-  /config/ \
-  /var/www/html/bootstrap/cache
+    /config/ \
+    /app/www/bootstrap/cache
 
 # add server name to nginx config while handling legacy settings
-if [ ! -z ${NGINX_APP_URL+x} ]; then
-  REPLACE_URL=${NGINX_APP_URL}
+if [[ -n ${NGINX_APP_URL+x} ]]; then
+    REPLACE_URL=${NGINX_APP_URL}
 fi
-if [ ! -z ${NGINX_APP_URL+x} ] && [ -z ${APP_URL+x} ]; then
-  printf "http://${NGINX_APP_URL}" > /run/s6/container_environment/APP_URL
+if [[ -n ${NGINX_APP_URL+x} ]] && [[ -z ${APP_URL+x} ]]; then
+    echo "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
 fi
-if [ -z ${NGINX_APP_URL+x} ] && [ ! -z ${APP_URL+x} ]; then
-  REPLACE_URL=$(echo ${APP_URL} | awk -F/ '{print $3}')
+if [[ -z ${NGINX_APP_URL+x} ]] && [[ -n ${APP_URL+x} ]]; then
+    REPLACE_URL=$(echo "${APP_URL}" | awk -F/ '{print $3}')
 fi
-sed -i "s/APP_URL_PLACEHOLDER/${REPLACE_URL}/g" /config/nginx/site-confs/default
+if [[ -z ${REPLACE_URL+x} ]]; then
+    echo "APP_URL variable not set. Please set the variable and recreate the container."
+    sleep infinity
+fi
+sed -i "s/APP_URL_PLACEHOLDER/${REPLACE_URL}/g" /config/nginx/site-confs/default.conf
 
-# if the Oauth DB files are not present copy the vendor files over to the db migrations
-if [ ! -f "/var/www/html/database/migrations/*create_oauth*" ]; then
-  cp -ax /var/www/html/vendor/laravel/passport/database/migrations/* /var/www/html/database/migrations/
+# If the Oauth DB files are not present copy the vendor files over to the db migrations
+if [ ! -f "/app/www/database/migrations/*create_oauth*" ]; then
+    cp -ax /app/www/vendor/laravel/passport/database/migrations/* /app/www/database/migrations/
 fi
 
 # if this container is setup run migrate
 if [ -f /config/storage/oauth-public.key ]; then
-  php /var/www/html/artisan migrate --force
+    php /app/www/artisan migrate --force
 fi
 
 # copy over timezone env var
-if [ ! -z ${TZ+x} ]; then
-  printf ${TZ} > /run/s6/container_environment/APP_TIMEZONE
+if [[ -n ${TZ+x} ]]; then
+    echo "${TZ}" >/run/s6/container_environment/APP_TIMEZONE
 fi
