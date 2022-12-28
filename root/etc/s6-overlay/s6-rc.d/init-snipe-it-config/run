@@ -52,7 +52,7 @@ if [[ -n ${NGINX_APP_URL+x} ]]; then
     REPLACE_URL=${NGINX_APP_URL}
 fi
 if [[ -n ${NGINX_APP_URL+x} ]] && [[ -z ${APP_URL+x} ]]; then
-    echo "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
+    printf '%s' "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
 fi
 if [[ -z ${NGINX_APP_URL+x} ]] && [[ -n ${APP_URL+x} ]]; then
     REPLACE_URL=$(echo "${APP_URL}" | awk -F/ '{print $3}')
