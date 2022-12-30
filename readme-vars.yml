@@ -18,18 +18,18 @@ common_param_env_vars_enabled: true #PGID, PUID, etc
 param_container_name: "{{ project_name }}"
 param_usage_include_vols: true
 param_volumes:
-  - { vol_path: "/config", vol_host_path: "<path to {{ project_name }} data>", desc: "Contains your config files and data storage for Snipe-IT" }
+  - { vol_path: "/config", vol_host_path: "/path/to/data", desc: "Contains your config files and data storage for Snipe-IT" }
 param_usage_include_ports: true
 param_ports:
   - { external_port: "8080", internal_port: "80", port_desc: "Snipe-IT Web UI" }
 param_usage_include_env: true
 param_env_vars:
   - { env_var: "APP_URL", env_value: "http://localhost:8080", desc: "Hostname or IP and port if applicable, be sure to define https/http"}
-  - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "<mysql host>", desc: "Mysql hostname or IP to use"}
-  - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "<mysql port>", desc: "Mysql port to use"}
-  - { env_var: "MYSQL_DATABASE", env_value: "<mysql database>", desc: "Mysql database to use"}
-  - { env_var: "MYSQL_USER", env_value: "<mysql pass>", desc: "Mysql user to use"}
-  - { env_var: "MYSQL_PASSWORD", env_value: "changeme", desc: "Mysql password to use"}
+  - { env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "", desc: "Mysql hostname or IP to use"}
+  - { env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "", desc: "Mysql port to use"}
+  - { env_var: "MYSQL_DATABASE", env_value: "", desc: "Mysql database to use"}
+  - { env_var: "MYSQL_USER", env_value: "", desc: "Mysql user to use"}
+  - { env_var: "MYSQL_PASSWORD", env_value: "", desc: "Mysql password to use"}
   - { env_var: "TZ", env_value: "US/Pacific", desc: "Specify a timezone to use EG Europe/London, this is required to run snipe-it"}
 
 # application setup block
@@ -75,6 +75,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - { date: "28.12.22:", desc: "Rebase to Alpine 3.17, migrate to s6v3." }
   - { date: "20.08.22:", desc: "Rebasing to alpine 3.15 with php8. Restructure nginx configs ([see changes announcement](https://info.linuxserver.io/issues/2022-08-20-nginx-base))." }
   - { date: "14.05.22:", desc: "Add php7-sodium for v6." }
   - { date: "12.04.22:", desc: "Don't build development elements." }

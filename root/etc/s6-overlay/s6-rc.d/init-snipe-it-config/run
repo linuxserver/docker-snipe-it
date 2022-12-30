@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
 # create folders
 mkdir -p \
@@ -34,7 +35,7 @@ if [[ ! -L /app/www/public/uploads ]]; then
 fi
 
 # Create API key if needed
-if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]; then
+if [[ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]]; then
     echo "Generating SnipeIT app key for first run"
     key=$(php /app/www/artisan key:generate --show)
     echo "${key}" >/config/SNIPE_IT_APP_KEY.txt
@@ -42,7 +43,7 @@ if [ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]; then
 fi
 
 # permissions
-chown -R abc:abc \
+lsiown -R abc:abc \
     /config/ \
     /app/www/bootstrap/cache
 
@@ -51,7 +52,7 @@ if [[ -n ${NGINX_APP_URL+x} ]]; then
     REPLACE_URL=${NGINX_APP_URL}
 fi
 if [[ -n ${NGINX_APP_URL+x} ]] && [[ -z ${APP_URL+x} ]]; then
-    echo "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
+    printf '%s' "http://${NGINX_APP_URL}" >/run/s6/container_environment/APP_URL
 fi
 if [[ -z ${NGINX_APP_URL+x} ]] && [[ -n ${APP_URL+x} ]]; then
     REPLACE_URL=$(echo "${APP_URL}" | awk -F/ '{print $3}')
@@ -63,16 +64,16 @@ fi
 sed -i "s/APP_URL_PLACEHOLDER/${REPLACE_URL}/g" /config/nginx/site-confs/default.conf
 
 # If the Oauth DB files are not present copy the vendor files over to the db migrations
-if [ ! -f "/app/www/database/migrations/*create_oauth*" ]; then
+if [[ ! -f "/app/www/database/migrations/*create_oauth*" ]]; then
     cp -ax /app/www/vendor/laravel/passport/database/migrations/* /app/www/database/migrations/
 fi
 
 # if this container is setup run migrate
-if [ -f /config/storage/oauth-public.key ]; then
+if [[ -f /config/storage/oauth-public.key ]]; then
     php /app/www/artisan migrate --force
 fi
 
 # copy over timezone env var
 if [[ -n ${TZ+x} ]]; then
-    echo "${TZ}" >/run/s6/container_environment/APP_TIMEZONE
+    printf '%s' "${TZ}" >/run/s6/container_environment/APP_TIMEZONE
 fi
