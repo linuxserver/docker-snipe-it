@@ -3,7 +3,7 @@ alpine-baselayout-data-3.4.0-r0
 alpine-keys-2.4-r1
 alpine-release-3.17.1-r0
 aom-libs-3.5.0-r0
-apache2-utils-2.4.54-r1
+apache2-utils-2.4.55-r0
 apk-tools-2.12.10-r1
 apr-1.7.0-r2
 apr-util-1.6.1-r14
@@ -15,10 +15,10 @@ busybox-binsh-1.35.0-r29
 ca-certificates-20220614-r4
 ca-certificates-bundle-20220614-r4
 coreutils-9.1-r0
-curl-7.87.0-r0
+curl-7.87.0-r1
 freetype-2.12.1-r0
 gdbm-1.23-r0
-git-2.38.2-r0
+git-2.38.3-r1
 jq-1.6-r2
 libacl-2.3.1-r1
 libattr-2.5.1-r2
@@ -27,7 +27,7 @@ libbsd-0.11.7-r0
 libbz2-1.0.8-r4
 libc-utils-0.7.2-r3
 libcrypto3-3.0.7-r2
-libcurl-7.87.0-r0
+libcurl-7.87.0-r1
 libdav1d-1.0.0-r2
 libedit-20221030.3.1-r0
 libexpat-2.5.0-r0
