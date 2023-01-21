@@ -23,14 +23,12 @@ RUN \
     php81-gd \
     php81-iconv \
     php81-ldap \
-    php81-mbstring \
     php81-pdo_mysql \
     php81-pdo_sqlite \
     php81-phar \
     php81-sodium \
     php81-sqlite3 \
     php81-tokenizer \
-    php81-xml \
     php81-xmlreader \
     php81-zip && \
   apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
