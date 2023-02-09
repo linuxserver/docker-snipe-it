@@ -34,7 +34,7 @@ pipeline {
     CI_PORT='80'
     CI_SSL='false'
     CI_DELAY='120'
-    CI_DOCKERENV='NGINX_APP_URL=_|DB_CONNECTION=sqlite_testing'
+    CI_DOCKERENV='APP_URL=http://localhost:80|NGINX_APP_URL=_|DB_CONNECTION=sqlite_testing'
     CI_AUTH='user:password'
     CI_WEBPATH=''
   }
