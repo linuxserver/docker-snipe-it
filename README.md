@@ -56,7 +56,7 @@ The architectures supported by this image are:
 | :----: | :----: | ---- |
 | x86-64 | ✅ | amd64-\<version tag\> |
 | arm64 | ✅ | arm64v8-\<version tag\> |
-| armhf| ✅ | arm32v7-\<version tag\> |
+| armhf | ✅ | arm32v7-\<version tag\> |
 
 ## Application Setup
 
@@ -114,13 +114,13 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - TZ=Etc/UTC
       - APP_URL=http://localhost:8080
       - MYSQL_PORT_3306_TCP_ADDR=
       - MYSQL_PORT_3306_TCP_PORT=
       - MYSQL_DATABASE=
       - MYSQL_USER=
       - MYSQL_PASSWORD=
-      - TZ=US/Pacific
     volumes:
       - /path/to/data:/config
     ports:
@@ -135,17 +135,18 @@ docker run -d \
   --name=snipe-it \
   -e PUID=1000 \
   -e PGID=1000 \
+  -e TZ=Etc/UTC \
   -e APP_URL=http://localhost:8080 \
   -e MYSQL_PORT_3306_TCP_ADDR= \
   -e MYSQL_PORT_3306_TCP_PORT= \
   -e MYSQL_DATABASE= \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
-  -e TZ=US/Pacific \
   -p 8080:80 \
   -v /path/to/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/snipe-it:latest
+
 ```
 
 ## Parameters
@@ -157,13 +158,13 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-p 80` | Snipe-IT Web UI |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
+| `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
 | `-e APP_URL=http://localhost:8080` | Hostname or IP and port if applicable, be sure to define https/http |
 | `-e MYSQL_PORT_3306_TCP_ADDR=` | Mysql hostname or IP to use |
 | `-e MYSQL_PORT_3306_TCP_PORT=` | Mysql port to use |
 | `-e MYSQL_DATABASE=` | Mysql database to use |
 | `-e MYSQL_USER=` | Mysql user to use |
 | `-e MYSQL_PASSWORD=` | Mysql password to use |
-| `-e TZ=US/Pacific` | Specify a timezone to use EG Europe/London, this is required to run snipe-it |
 | `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Environment variables from files (Docker secrets)
