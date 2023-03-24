@@ -94,7 +94,7 @@ The application accepts a series of environment variables to further customize i
 This image uses our NGINX base image all configuration files for PHP and NGINX are located in `/config/php`. To overide any defaults please modify `/config/php/php-local.ini` IE for upload size: 
 
 ```
-upload_max_filesize = 16
+upload_max_filesize = 16M
 post_max_size = 16M
 ```
 
