@@ -25,6 +25,7 @@ RUN \
     php81-ldap \
     php81-pdo_mysql \
     php81-pdo_sqlite \
+    php81-pecl-redis \
     php81-phar \
     php81-sodium \
     php81-sqlite3 \
