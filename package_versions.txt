@@ -126,6 +126,7 @@ libzip                               1.9.2-r2               apk
 linux-pam                            1.5.2-r1               apk           
 livewire/livewire                    v2.10.6                php-composer  
 logrotate                            3.20.1-r3              apk           
+lz4-libs                             1.9.4-r1               apk           
 maatwebsite/excel                    3.1.40                 php-composer  
 maennchen/zipstream-php              2.2.1                  php-composer  
 mariadb-client                       10.6.12-r0             apk           
@@ -184,7 +185,9 @@ php81-openssl                        8.1.17-r0              apk
 php81-pdo                            8.1.17-r0              apk           
 php81-pdo_mysql                      8.1.17-r0              apk           
 php81-pdo_sqlite                     8.1.17-r0              apk           
+php81-pecl-igbinary                  3.2.12-r0              apk           
 php81-pecl-mcrypt                    1.0.6-r0               apk           
+php81-pecl-redis                     5.3.7-r0               apk           
 php81-phar                           8.1.17-r0              apk           
 php81-session                        8.1.17-r0              apk           
 php81-simplexml                      8.1.17-r0              apk           
