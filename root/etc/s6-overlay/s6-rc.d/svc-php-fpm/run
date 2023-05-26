@@ -3,4 +3,4 @@
 
 export APP_KEY=$(cat /config/SNIPE_IT_APP_KEY.txt)
 
-exec /usr/sbin/php-fpm81 -F
+exec /usr/sbin/php-fpm82 -F
