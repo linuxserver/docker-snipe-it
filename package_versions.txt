@@ -21,6 +21,7 @@ barryvdh/laravel-dompdf                                                         
 bash                                                                              5.2.15-r0              apk           
 brick/math                                                                        0.9.3                  php-composer  
 brotli-libs                                                                       1.0.9-r9               apk           
+busybox                                                                           1.35.0                 binary        
 busybox                                                                           1.35.0-r29             apk           
 busybox-binsh                                                                     1.35.0-r29             apk           
 ca-certificates                                                                   20230506-r0            apk           
@@ -152,7 +153,6 @@ netcat-openbsd                                                                  
 nette/schema                                                                      v1.2.2                 php-composer  
 nette/utils                                                                       v3.2.7                 php-composer  
 nghttp2-libs                                                                      1.51.0-r1              apk           
-nginx                                                                             1.22.1                 binary        
 nginx                                                                             1.22.1-r0              apk           
 nikic/php-parser                                                                  v4.14.0                php-composer  
 nunomaduro/collision                                                              v5.11.0                php-composer  
@@ -168,7 +168,7 @@ pcre                                                                            
 pcre2                                                                             10.42-r0               apk           
 phenx/php-font-lib                                                                0.5.4                  php-composer  
 phenx/php-svg-lib                                                                 0.5.0                  php-composer  
-php-fpm                                                                           8.1.22                 binary        
+php-cli                                                                           8.1.22                 binary        
 php-http/message-factory                                                          v1.0.2                 php-composer  
 php81                                                                             8.1.22-r0              apk           
 php81-bcmath                                                                      8.1.22-r0              apk           
