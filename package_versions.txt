@@ -4,7 +4,7 @@ alek13/slack                                                                    
 alpine-baselayout                                                                 3.4.0-r0               apk           
 alpine-baselayout-data                                                            3.4.0-r0               apk           
 alpine-keys                                                                       2.4-r1                 apk           
-alpine-release                                                                    3.17.4-r0              apk           
+alpine-release                                                                    3.17.5-r0              apk           
 aom-libs                                                                          3.5.0-r0               apk           
 apache2-utils                                                                     2.4.57-r0              apk           
 apk-tools                                                                         2.12.10-r1             apk           
@@ -152,7 +152,6 @@ netcat-openbsd                                                                  
 nette/schema                                                                      v1.2.2                 php-composer  
 nette/utils                                                                       v3.2.7                 php-composer  
 nghttp2-libs                                                                      1.51.0-r1              apk           
-nginx                                                                             1.22.1                 binary        
 nginx                                                                             1.22.1-r0              apk           
 nikic/php-parser                                                                  v4.14.0                php-composer  
 nunomaduro/collision                                                              v5.11.0                php-composer  
@@ -168,7 +167,6 @@ pcre                                                                            
 pcre2                                                                             10.42-r0               apk           
 phenx/php-font-lib                                                                0.5.4                  php-composer  
 phenx/php-svg-lib                                                                 0.5.0                  php-composer  
-php-fpm                                                                           8.1.22                 binary        
 php-http/message-factory                                                          v1.0.2                 php-composer  
 php81                                                                             8.1.22-r0              apk           
 php81-bcmath                                                                      8.1.22-r0              apk           
