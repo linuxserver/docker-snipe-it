@@ -62,7 +62,7 @@ git                                                                             
 graham-campbell/result-type                                                       v1.0.4                 php-composer  
 guzzlehttp/guzzle                                                                 7.4.5                  php-composer  
 guzzlehttp/promises                                                               1.5.1                  php-composer  
-guzzlehttp/psr7                                                                   2.4.0                  php-composer  
+guzzlehttp/psr7                                                                   2.4.5                  php-composer  
 intervention/image                                                                2.7.2                  php-composer  
 javiereguiluz/easyslugger                                                         v1.0.0                 php-composer  
 jq                                                                                1.6-r2                 apk           
@@ -95,7 +95,7 @@ libavif                                                                         
 libbsd                                                                            0.11.7-r0              apk           
 libbz2                                                                            1.0.8-r4               apk           
 libc-utils                                                                        0.7.2-r3               apk           
-libcrypto3                                                                        3.0.10-r0              apk           
+libcrypto3                                                                        3.0.11-r0              apk           
 libcurl                                                                           8.2.1-r0               apk           
 libdav1d                                                                          1.0.0-r2               apk           
 libedit                                                                           20221030.3.1-r0        apk           
@@ -112,7 +112,7 @@ libproc                                                                         
 libsasl                                                                           2.1.28-r3              apk           
 libsm                                                                             1.2.3-r1               apk           
 libsodium                                                                         1.0.18-r2              apk           
-libssl3                                                                           3.0.10-r0              apk           
+libssl3                                                                           3.0.11-r0              apk           
 libstdc++                                                                         12.2.1_git20220924-r4  apk           
 libuuid                                                                           2.38.1-r1              apk           
 libwebp                                                                           1.2.4-r3               apk           
@@ -155,10 +155,10 @@ nghttp2-libs                                                                    
 nginx                                                                             1.22.1-r0              apk           
 nikic/php-parser                                                                  v4.14.0                php-composer  
 nunomaduro/collision                                                              v5.11.0                php-composer  
-nyholm/psr7                                                                       1.5.1                  php-composer  
+nyholm/psr7                                                                       1.6.1                  php-composer  
 onelogin/php-saml                                                                 3.6.1                  php-composer  
 oniguruma                                                                         6.9.8-r0               apk           
-openssl                                                                           3.0.10-r0              apk           
+openssl                                                                           3.0.11-r0              apk           
 opis/closure                                                                      3.6.3                  php-composer  
 paragonie/constant_time_encoding                                                  v2.6.3                 php-composer  
 paragonie/random_compat                                                           v9.99.100              php-composer  
@@ -271,6 +271,7 @@ symfony/translation-contracts                                                   
 symfony/var-dumper                                                                v5.4.9                 php-composer  
 tecnickcom/tc-lib-barcode                                                         1.17.14                php-composer  
 tecnickcom/tc-lib-color                                                           1.14.14                php-composer  
+tecnickcom/tcpdf                                                                  6.6.2                  php-composer  
 tijsverkoyen/css-to-inline-styles                                                 2.2.4                  php-composer  
 tmilos/lexer                                                                      1.0.2                  php-composer  
 tmilos/scim-filter-parser                                                         1.3.0                  php-composer  
