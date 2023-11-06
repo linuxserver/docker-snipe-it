@@ -116,7 +116,7 @@ libssl3                                                                         
 libstdc++                                                                         12.2.1_git20220924-r4  apk           
 libuuid                                                                           2.38.1-r1              apk           
 libwebp                                                                           1.2.4-r3               apk           
-libx11                                                                            1.8.4-r1               apk           
+libx11                                                                            1.8.7-r0               apk           
 libxau                                                                            1.0.10-r0              apk           
 libxcb                                                                            1.15-r0                apk           
 libxdmcp                                                                          1.1.4-r0               apk           
