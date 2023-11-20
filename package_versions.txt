@@ -107,7 +107,7 @@ libjpeg-turbo                                                        2.1.4-r0   
 libldap                                                              2.6.3-r6               apk           
 libmd                                                                1.0.4-r0               apk           
 libpng                                                               1.6.39-r0              apk           
-libproc                                                              3.3.17-r2              apk           
+libproc                                                              3.3.17-r3              apk           
 libsasl                                                              2.1.28-r3              apk           
 libsm                                                                1.2.3-r1               apk           
 libsodium                                                            1.0.18-r2              apk           
@@ -207,7 +207,7 @@ popt                                                                 1.19-r0    
 pragmarx/google2fa                                                   v8.0.1                 php-composer  
 pragmarx/google2fa-laravel                                           v1.4.1                 php-composer  
 pragmarx/google2fa-qrcode                                            v1.0.3                 php-composer  
-procps                                                               3.3.17-r2              apk           
+procps                                                               3.3.17-r3              apk           
 psr/cache                                                            1.0.1                  php-composer  
 psr/container                                                        1.1.2                  php-composer  
 psr/event-dispatcher                                                 1.0.0                  php-composer  
