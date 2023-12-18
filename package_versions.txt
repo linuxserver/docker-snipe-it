@@ -26,7 +26,7 @@ busybox-binsh                                                        1.35.0-r29 
 ca-certificates                                                      20230506-r0            apk           
 ca-certificates-bundle                                               20230506-r0            apk           
 coreutils                                                            9.1-r0                 apk           
-curl                                                                 8.4.0-r0               apk           
+curl                                                                 8.5.0-r0               apk           
 dasprid/enum                                                         1.0.3                  php-composer  
 defuse/php-encryption                                                v2.3.1                 php-composer  
 dflydev/dot-access-data                                              v3.0.1                 php-composer  
@@ -96,7 +96,7 @@ libbsd                                                               0.11.7-r0  
 libbz2                                                               1.0.8-r4               apk           
 libc-utils                                                           0.7.2-r3               apk           
 libcrypto3                                                           3.0.12-r1              apk           
-libcurl                                                              8.4.0-r0               apk           
+libcurl                                                              8.5.0-r0               apk           
 libdav1d                                                             1.0.0-r2               apk           
 libedit                                                              20221030.3.1-r0        apk           
 libexpat                                                             2.5.0-r0               apk           
