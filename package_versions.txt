@@ -95,7 +95,7 @@ libavif                              0.11.1-r0              apk
 libbsd                               0.11.7-r0              apk           
 libbz2                               1.0.8-r4               apk           
 libc-utils                           0.7.2-r3               apk           
-libcrypto3                           3.0.12-r2              apk           
+libcrypto3                           3.0.12-r3              apk           
 libcurl                              8.5.0-r0               apk           
 libdav1d                             1.0.0-r2               apk           
 libedit                              20221030.3.1-r0        apk           
@@ -111,7 +111,7 @@ libproc                              3.3.17-r3              apk
 libsasl                              2.1.28-r3              apk           
 libsm                                1.2.3-r1               apk           
 libsodium                            1.0.18-r2              apk           
-libssl3                              3.0.12-r2              apk           
+libssl3                              3.0.12-r3              apk           
 libstdc++                            12.2.1_git20220924-r4  apk           
 libuuid                              2.38.1-r1              apk           
 libwebp                              1.2.4-r3               apk           
@@ -157,7 +157,7 @@ nunomaduro/collision                 v5.11.0                php-composer
 nyholm/psr7                          1.6.1                  php-composer  
 onelogin/php-saml                    3.6.1                  php-composer  
 oniguruma                            6.9.8-r0               apk           
-openssl                              3.0.12-r2              apk           
+openssl                              3.0.12-r3              apk           
 opis/closure                         3.6.3                  php-composer  
 paragonie/constant_time_encoding     v2.6.3                 php-composer  
 paragonie/random_compat              v9.99.100              php-composer  
@@ -235,7 +235,7 @@ skalibs                              2.12.0.1-r0            apk
 spatie/db-dumper                     2.21.1                 php-composer  
 spatie/laravel-backup                6.16.5                 php-composer  
 spatie/temporary-directory           1.3.0                  php-composer  
-sqlite-libs                          3.40.1-r0              apk           
+sqlite-libs                          3.40.1-r1              apk           
 squizlabs/php_codesniffer            3.7.1                  php-composer  
 ssl_client                           1.35.0-r29             apk           
 swiftmailer/swiftmailer              v6.3.0                 php-composer  
