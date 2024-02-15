@@ -66,6 +66,7 @@ guzzlehttp/psr7                                2.6.2                  php-compos
 intervention/image                             2.7.2                  php-composer  
 javiereguiluz/easyslugger                      v1.0.0                 php-composer  
 jq                                             1.6-r2                 apk           
+laravel-notification-channels/google-chat      v1.0.1                 php-composer  
 laravel-notification-channels/microsoft-teams  v1.1.4                 php-composer  
 laravel/framework                              v8.83.22               php-composer  
 laravel/helpers                                v1.5.0                 php-composer  
@@ -87,7 +88,7 @@ league/flysystem-aws-s3-v3                     1.0.30                 php-compos
 league/flysystem-cached-adapter                1.1.0                  php-composer  
 league/mime-type-detection                     1.11.0                 php-composer  
 league/oauth1-client                           v1.10.1                php-composer  
-league/oauth2-server                           8.3.5                  php-composer  
+league/oauth2-server                           8.4.2                  php-composer  
 league/uri                                     6.7.1                  php-composer  
 league/uri-interfaces                          2.3.0                  php-composer  
 libacl                                         2.3.1-r1               apk           
@@ -248,7 +249,7 @@ symfony/event-dispatcher                       v5.4.9                 php-compos
 symfony/event-dispatcher-contracts             v2.5.2                 php-composer  
 symfony/finder                                 v5.4.27                php-composer  
 symfony/http-foundation                        v5.4.10                php-composer  
-symfony/http-kernel                            v5.4.10                php-composer  
+symfony/http-kernel                            v5.4.20                php-composer  
 symfony/mime                                   v5.4.10                php-composer  
 symfony/polyfill-ctype                         v1.28.0                php-composer  
 symfony/polyfill-iconv                         v1.26.0                php-composer  
