@@ -65,12 +65,7 @@ The architectures supported by this image are:
 
 ### PHP customization
 
-This image uses our NGINX base image all configuration files for PHP and NGINX are located in `/config/php`. To overide any defaults please modify `/config/php/php-local.ini` IE for upload size:
-
-```
-upload_max_filesize = 16M
-post_max_size = 16M
-```
+This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
 
 ## Usage
 
