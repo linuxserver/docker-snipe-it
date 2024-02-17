@@ -20,6 +20,7 @@ RUN \
     php81-bcmath \
     php81-ctype \
     php81-curl \
+    php81-exif \
     php81-gd \
     php81-iconv \
     php81-ldap \
