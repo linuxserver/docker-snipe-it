@@ -101,7 +101,7 @@ libcrypto3                                     3.0.12-r4              apk
 libcurl                                        8.5.0-r0               apk           
 libdav1d                                       1.0.0-r2               apk           
 libedit                                        20221030.3.1-r0        apk           
-libexpat                                       2.5.0-r0               apk           
+libexpat                                       2.6.0-r0               apk           
 libgcc                                         12.2.1_git20220924-r4  apk           
 libice                                         1.0.10-r1              apk           
 libintl                                        0.21.1-r1              apk           
@@ -175,6 +175,7 @@ php81-common                                   8.1.22-r0              apk
 php81-ctype                                    8.1.22-r0              apk           
 php81-curl                                     8.1.22-r0              apk           
 php81-dom                                      8.1.22-r0              apk           
+php81-exif                                     8.1.22-r0              apk           
 php81-fileinfo                                 8.1.22-r0              apk           
 php81-fpm                                      8.1.22-r0              apk           
 php81-gd                                       8.1.22-r0              apk           
