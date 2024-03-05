@@ -167,7 +167,7 @@ paragonie/sodium_compat                        v1.19.0                php-compos
 pcre                                           8.45-r2                apk             
 pcre2                                          10.42-r0               apk             
 phenx/php-font-lib                             0.5.4                  php-composer    
-phenx/php-svg-lib                              0.5.1                  php-composer    
+phenx/php-svg-lib                              0.5.2                  php-composer    
 php-http/message-factory                       v1.0.2                 php-composer    
 php81                                          8.1.22-r0              apk             
 php81-bcmath                                   8.1.22-r0              apk             
