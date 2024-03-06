@@ -11,7 +11,7 @@ available_architectures:
   - {arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
   - {arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
 # container parameters
-common_param_env_vars_enabled: true #PGID, PUID, etc
+common_param_env_vars_enabled: true
 param_container_name: "{{ project_name }}"
 param_usage_include_vols: true
 param_volumes:
@@ -27,13 +27,34 @@ param_env_vars:
   - {env_var: "MYSQL_DATABASE", env_value: "", desc: "Mysql database to use"}
   - {env_var: "MYSQL_USER", env_value: "", desc: "Mysql user to use"}
   - {env_var: "MYSQL_PASSWORD", env_value: "", desc: "Mysql password to use"}
-  - {env_var: "TZ", env_value: "US/Pacific", desc: "Specify a timezone to use EG Europe/London, this is required to run snipe-it"}
+
+opt_param_usage_include_env: true
+opt_param_env_vars:
+  - {env_var: "APP_ENV", env_value: "production", desc: "Default is `production` but can use `testing` or `develop`."}
+  - {env_var: "APP_DEBUG", env_value: "false", desc: "Set to `true` to see debugging output in the web UI."}
+  - {env_var: "APP_LOCALE", env_value: "", desc: "Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language)."}
+  - {env_var: "MAIL_PORT_587_TCP_ADDR", env_value: "US/Pacific", desc: "SMTP mail server ip or hostname."}
+  - {env_var: "MAIL_PORT_587_TCP_PORT", env_value: "US/Pacific", desc: "SMTP mail server port."}
+  - {env_var: "MAIL_ENV_FROM_ADDR", env_value: "US/Pacific", desc: "The email address mail should be replied to and listed when sent."}
+  - {env_var: "MAIL_ENV_FROM_NAME", env_value: "US/Pacific", desc: "The name listed on email sent from the default account on the system."}
+  - {env_var: "MAIL_ENV_ENCRYPTION", env_value: "US/Pacific", desc: "Mail encryption to use e.g. `tls`."}
+  - {env_var: "MAIL_ENV_USERNAME", env_value: "US/Pacific", desc: "SMTP server login username."}
+  - {env_var: "MAIL_ENV_PASSWORD", env_value: "US/Pacific", desc: "SMTP server login password."}
 # application setup block
 app_setup_block_enabled: true
-app_setup_block: "Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).\n**This container requires a MySQL or MariaDB server to connect to, we reccomend [ours](https://github.com/linuxserver/docker-mariadb)**\n\nThis container also generates an SSL certificate and stores it in\n```\n/config/keys/cert.crt\n/config/keys/cert.key\n```\nTo use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:\n\n```\n-p 443:443\n```\n\nThe application accepts a series of environment variables to further customize itself on boot:\n\n| Parameter | Function |\n| :---: | --- |\n| `-e APP_ENV=` | Default is production but can use testing or develop|\n| `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|\n| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here](https://snipe-it.readme.io/docs/configuration#section-setting-a-language)|\n| `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|\n| `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|\n| `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|\n| `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system|\n| `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use IE tls |\n| `-e MAIL_ENV_USERNAME=` | SMTP server login username|\n| `-e MAIL_ENV_PASSWORD=` | SMTP server login password|\n\n### PHP customization\n\nThis image uses our NGINX base image all configuration files for PHP and NGINX are located in `/config/php`. To overide any defaults please modify `/config/php/php-local.ini` IE for upload size: \n\n```\nupload_max_filesize = 16M\npost_max_size = 16M\n```\n"
+app_setup_block: |
+  "Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
+
+  **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
+
+  ### PHP customization
+
+  This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
+
 # changelog
 changelogs:
-  - { date: "25.12.23:", desc: "Existing users should update: site-confs/default.conf - Cleanup default site conf." }
+  - {date: "06.03.24:", desc: "Existing users should update: site-confs/default.conf - Cleanup default site conf."}
+  - {date: "17.02.24:", desc: "Add php81-exif."}
   - {date: "03.07.23:", desc: "Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)"}
   - {date: "13.04.23:", desc: "Move ssl.conf include to default.conf."}
   - {date: "13.04.23:", desc: "Add php81-pecl-redis for redis support."}

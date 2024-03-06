@@ -59,43 +59,13 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
-**This container requires a MySQL or MariaDB server to connect to, we reccomend [ours](https://github.com/linuxserver/docker-mariadb)**
+"Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
 
-This container also generates an SSL certificate and stores it in
-```
-/config/keys/cert.crt
-/config/keys/cert.key
-```
-To use your own certificate swap these files with yours. To use SSL forward your port to 443 inside the container IE:
-
-```
--p 443:443
-```
-
-The application accepts a series of environment variables to further customize itself on boot:
-
-| Parameter | Function |
-| :---: | --- |
-| `-e APP_ENV=` | Default is production but can use testing or develop|
-| `-e APP_DEBUG=` | Set to true to see debugging output in the web UI|
-| `-e APP_LOCALE=` | Default is en set to the language preferred full list [here](https://snipe-it.readme.io/docs/configuration#section-setting-a-language)|
-| `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mailserver ip or hostname|
-| `-e MAIL_PORT_587_TCP_PORT=` | SMTP mailserver port|
-| `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent|
-| `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system|
-| `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use IE tls |
-| `-e MAIL_ENV_USERNAME=` | SMTP server login username|
-| `-e MAIL_ENV_PASSWORD=` | SMTP server login password|
+**This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
 
 ### PHP customization
 
-This image uses our NGINX base image all configuration files for PHP and NGINX are located in `/config/php`. To overide any defaults please modify `/config/php/php-local.ini` IE for upload size: 
-
-```
-upload_max_filesize = 16M
-post_max_size = 16M
-```
+This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
 
 ## Usage
 
@@ -105,7 +75,6 @@ To help you get started creating a container from this image you can either use 
 
 ```yaml
 ---
-version: "2.1"
 services:
   snipe-it:
     image: lscr.io/linuxserver/snipe-it:latest
@@ -120,6 +89,16 @@ services:
       - MYSQL_DATABASE=
       - MYSQL_USER=
       - MYSQL_PASSWORD=
+      - APP_ENV=production #optional
+      - APP_DEBUG=false #optional
+      - APP_LOCALE= #optional
+      - MAIL_PORT_587_TCP_ADDR=US/Pacific #optional
+      - MAIL_PORT_587_TCP_PORT=US/Pacific #optional
+      - MAIL_ENV_FROM_ADDR=US/Pacific #optional
+      - MAIL_ENV_FROM_NAME=US/Pacific #optional
+      - MAIL_ENV_ENCRYPTION=US/Pacific #optional
+      - MAIL_ENV_USERNAME=US/Pacific #optional
+      - MAIL_ENV_PASSWORD=US/Pacific #optional
     volumes:
       - /path/to/data:/config
     ports:
@@ -141,6 +120,16 @@ docker run -d \
   -e MYSQL_DATABASE= \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
+  -e APP_ENV=production `#optional` \
+  -e APP_DEBUG=false `#optional` \
+  -e APP_LOCALE= `#optional` \
+  -e MAIL_PORT_587_TCP_ADDR=US/Pacific `#optional` \
+  -e MAIL_PORT_587_TCP_PORT=US/Pacific `#optional` \
+  -e MAIL_ENV_FROM_ADDR=US/Pacific `#optional` \
+  -e MAIL_ENV_FROM_NAME=US/Pacific `#optional` \
+  -e MAIL_ENV_ENCRYPTION=US/Pacific `#optional` \
+  -e MAIL_ENV_USERNAME=US/Pacific `#optional` \
+  -e MAIL_ENV_PASSWORD=US/Pacific `#optional` \
   -p 8080:80 \
   -v /path/to/data:/config \
   --restart unless-stopped \
@@ -163,6 +152,16 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e MYSQL_DATABASE=` | Mysql database to use |
 | `-e MYSQL_USER=` | Mysql user to use |
 | `-e MYSQL_PASSWORD=` | Mysql password to use |
+| `-e APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
+| `-e APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
+| `-e APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
+| `-e MAIL_PORT_587_TCP_ADDR=US/Pacific` | SMTP mail server ip or hostname. |
+| `-e MAIL_PORT_587_TCP_PORT=US/Pacific` | SMTP mail server port. |
+| `-e MAIL_ENV_FROM_ADDR=US/Pacific` | The email address mail should be replied to and listed when sent. |
+| `-e MAIL_ENV_FROM_NAME=US/Pacific` | The name listed on email sent from the default account on the system. |
+| `-e MAIL_ENV_ENCRYPTION=US/Pacific` | Mail encryption to use e.g. `tls`. |
+| `-e MAIL_ENV_USERNAME=US/Pacific` | SMTP server login username. |
+| `-e MAIL_ENV_PASSWORD=US/Pacific` | SMTP server login password. |
 | `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Environment variables from files (Docker secrets)
@@ -234,7 +233,7 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 
 ## Updating Info
 
-Most of our images are static, versioned, and require an image update and container recreation to update the app inside. With some exceptions (ie. nextcloud, plex), we do not recommend or support updating apps inside the container. Please consult the [Application Setup](#application-setup) section above to see if it is recommended for the image.
+Most of our images are static, versioned, and require an image update and container recreation to update the app inside. With some exceptions (noted in the relevant readme.md), we do not recommend or support updating apps inside the container. Please consult the [Application Setup](#application-setup) section above to see if it is recommended for the image.
 
 Below are the instructions for updating containers:
 
@@ -299,21 +298,6 @@ Below are the instructions for updating containers:
     docker image prune
     ```
 
-### Via Watchtower auto-updater (only use if you don't remember the original parameters)
-
-* Pull the latest image at its tag and replace it with the same env variables in one run:
-
-    ```bash
-    docker run --rm \
-      -v /var/run/docker.sock:/var/run/docker.sock \
-      containrrr/watchtower \
-      --run-once snipe-it
-    ```
-
-* You can also remove the old dangling images: `docker image prune`
-
-**warning**: We do not endorse the use of Watchtower as a solution to automated updates of existing Docker containers. In fact we generally discourage automated updates. However, this is a useful tool for one-time manual updates of containers where you have forgotten the original parameters. In the long term, we highly recommend using [Docker Compose](https://docs.linuxserver.io/general/docker-compose).
-
 ### Image Update Notifications - Diun (Docker Image Update Notifier)
 
 **tip**: We recommend [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended or supported.
@@ -341,6 +325,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **17.02.24:** - Add php81-exif.
 * **03.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
 * **13.04.23:** - Move ssl.conf include to default.conf.
 * **13.04.23:** - Add php81-pecl-redis for redis support.
