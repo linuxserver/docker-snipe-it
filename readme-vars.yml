@@ -53,6 +53,7 @@ app_setup_block: |
 
 # changelog
 changelogs:
+  - {date: "06.03.24:", desc: "Existing users should update: site-confs/default.conf - Cleanup default site conf."}
   - {date: "17.02.24:", desc: "Add php81-exif."}
   - {date: "03.07.23:", desc: "Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)"}
   - {date: "13.04.23:", desc: "Move ssl.conf include to default.conf."}
