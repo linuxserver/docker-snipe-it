@@ -325,6 +325,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **06.03.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **17.02.24:** - Add php81-exif.
 * **03.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
 * **13.04.23:** - Move ssl.conf include to default.conf.
