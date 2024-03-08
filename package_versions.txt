@@ -204,7 +204,7 @@ phpdocumentor/reflection-docblock              5.3.0                  php-compos
 phpdocumentor/type-resolver                    1.6.1                  php-composer    
 phpoffice/phpspreadsheet                       1.24.1                 php-composer    
 phpoption/phpoption                            1.8.1                  php-composer    
-phpseclib/phpseclib                            3.0.34                 php-composer    
+phpseclib/phpseclib                            3.0.37                 php-composer    
 phpspec/prophecy                               v1.15.0                php-composer    
 popt                                           1.19-r0                apk             
 pragmarx/google2fa                             v8.0.1                 php-composer    
