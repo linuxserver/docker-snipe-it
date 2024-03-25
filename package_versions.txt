@@ -23,8 +23,8 @@ brick/math                                     0.9.3                  php-compos
 brotli-libs                                    1.0.9-r9               apk             
 busybox                                        1.35.0-r29             apk             
 busybox-binsh                                  1.35.0-r29             apk             
-ca-certificates                                20230506-r0            apk             
-ca-certificates-bundle                         20230506-r0            apk             
+ca-certificates                                20240226-r0            apk             
+ca-certificates-bundle                         20240226-r0            apk             
 coreutils                                      9.1-r0                 apk             
 curl                                           8.5.0-r0               apk             
 dasprid/enum                                   1.0.3                  php-composer    
@@ -101,7 +101,7 @@ libcrypto3                                     3.0.12-r4              apk
 libcurl                                        8.5.0-r0               apk             
 libdav1d                                       1.0.0-r2               apk             
 libedit                                        20221030.3.1-r0        apk             
-libexpat                                       2.6.0-r0               apk             
+libexpat                                       2.6.2-r0               apk             
 libgcc                                         12.2.1_git20220924-r4  apk             
 libice                                         1.0.10-r1              apk             
 libintl                                        0.21.1-r1              apk             
