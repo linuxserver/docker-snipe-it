@@ -39,7 +39,7 @@ if [[ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]] && [[ -z "${APP_KEY}" ]]; then
     echo "Generating SnipeIT app key for first run"
     key=$(php /app/www/artisan key:generate --show)
     printf "%s" "${key}" > /run/s6/container_environment/APP_KEY
-    echo "App Key set to ${key} you can set the APP_KEY environment variable to override"
+    echo "App Key set to ${key} you can set the APP_KEY environment variable to provide a persistent key."
 elif [[ -f "/config/SNIPE_IT_APP_KEY.txt" ]]; then
     printf '%s' "$(cat /config/SNIPE_IT_APP_KEY.txt)" > /run/s6/container_environment/APP_KEY
 fi

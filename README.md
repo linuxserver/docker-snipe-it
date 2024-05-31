@@ -83,6 +83,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - APP_KEY=
       - APP_URL=http://localhost:8080
       - MYSQL_PORT_3306_TCP_ADDR=
       - MYSQL_PORT_3306_TCP_PORT=
@@ -90,7 +91,6 @@ services:
       - MYSQL_USER=
       - MYSQL_PASSWORD=
       - APP_ENV=production #optional
-      - APP_KEY= #optional
       - APP_DEBUG=false #optional
       - APP_LOCALE= #optional
       - MAIL_PORT_587_TCP_ADDR= #optional
@@ -115,6 +115,7 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e APP_KEY= \
   -e APP_URL=http://localhost:8080 \
   -e MYSQL_PORT_3306_TCP_ADDR= \
   -e MYSQL_PORT_3306_TCP_PORT= \
@@ -122,7 +123,6 @@ docker run -d \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
   -e APP_ENV=production `#optional` \
-  -e APP_KEY= `#optional` \
   -e APP_DEBUG=false `#optional` \
   -e APP_LOCALE= `#optional` \
   -e MAIL_PORT_587_TCP_ADDR= `#optional` \
@@ -148,6 +148,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
+| `-e APP_KEY=` | App key used for encrypting stored data. Generate with `docker exec snipe-it php /app/www/artisan key:generate --show`. |
 | `-e APP_URL=http://localhost:8080` | Hostname or IP and port if applicable, be sure to define https/http |
 | `-e MYSQL_PORT_3306_TCP_ADDR=` | Mysql hostname or IP to use |
 | `-e MYSQL_PORT_3306_TCP_PORT=` | Mysql port to use |
@@ -155,7 +156,6 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e MYSQL_USER=` | Mysql user to use |
 | `-e MYSQL_PASSWORD=` | Mysql password to use |
 | `-e APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
-| `-e APP_KEY=` | App key used for encrypting stored data. Generate with `docker exec snipe-it php /app/www/artisan key:generate --show`. |
 | `-e APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
 | `-e APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
 | `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mail server ip or hostname. |
