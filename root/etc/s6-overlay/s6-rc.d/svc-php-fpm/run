@@ -1,6 +1,0 @@
-#!/usr/bin/with-contenv bash
-# shellcheck shell=bash
-
-export APP_KEY=$(cat /config/SNIPE_IT_APP_KEY.txt)
-
-exec /usr/sbin/php-fpm81 -F

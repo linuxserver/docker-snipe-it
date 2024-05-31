@@ -41,7 +41,7 @@ Find us at:
 
 [Snipe-it](https://github.com/snipe/snipe-it) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
-[![snipe-it](https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png)](https://github.com/snipe/snipe-it)
+[![snipe-it](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/snipe-it-logo.png)](https://github.com/snipe/snipe-it)
 
 ## Supported Architectures
 
@@ -90,17 +90,18 @@ services:
       - MYSQL_USER=
       - MYSQL_PASSWORD=
       - APP_ENV=production #optional
+      - APP_KEY= #optional
       - APP_DEBUG=false #optional
       - APP_LOCALE= #optional
-      - MAIL_PORT_587_TCP_ADDR=US/Pacific #optional
-      - MAIL_PORT_587_TCP_PORT=US/Pacific #optional
-      - MAIL_ENV_FROM_ADDR=US/Pacific #optional
-      - MAIL_ENV_FROM_NAME=US/Pacific #optional
-      - MAIL_ENV_ENCRYPTION=US/Pacific #optional
-      - MAIL_ENV_USERNAME=US/Pacific #optional
-      - MAIL_ENV_PASSWORD=US/Pacific #optional
+      - MAIL_PORT_587_TCP_ADDR= #optional
+      - MAIL_PORT_587_TCP_PORT= #optional
+      - MAIL_ENV_FROM_ADDR= #optional
+      - MAIL_ENV_FROM_NAME= #optional
+      - MAIL_ENV_ENCRYPTION= #optional
+      - MAIL_ENV_USERNAME= #optional
+      - MAIL_ENV_PASSWORD= #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/snipe-it/data:/config
     ports:
       - 8080:80
     restart: unless-stopped
@@ -121,17 +122,18 @@ docker run -d \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
   -e APP_ENV=production `#optional` \
+  -e APP_KEY= `#optional` \
   -e APP_DEBUG=false `#optional` \
   -e APP_LOCALE= `#optional` \
-  -e MAIL_PORT_587_TCP_ADDR=US/Pacific `#optional` \
-  -e MAIL_PORT_587_TCP_PORT=US/Pacific `#optional` \
-  -e MAIL_ENV_FROM_ADDR=US/Pacific `#optional` \
-  -e MAIL_ENV_FROM_NAME=US/Pacific `#optional` \
-  -e MAIL_ENV_ENCRYPTION=US/Pacific `#optional` \
-  -e MAIL_ENV_USERNAME=US/Pacific `#optional` \
-  -e MAIL_ENV_PASSWORD=US/Pacific `#optional` \
+  -e MAIL_PORT_587_TCP_ADDR= `#optional` \
+  -e MAIL_PORT_587_TCP_PORT= `#optional` \
+  -e MAIL_ENV_FROM_ADDR= `#optional` \
+  -e MAIL_ENV_FROM_NAME= `#optional` \
+  -e MAIL_ENV_ENCRYPTION= `#optional` \
+  -e MAIL_ENV_USERNAME= `#optional` \
+  -e MAIL_ENV_PASSWORD= `#optional` \
   -p 8080:80 \
-  -v /path/to/data:/config \
+  -v /path/to/snipe-it/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/snipe-it:latest
 ```
@@ -153,15 +155,16 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e MYSQL_USER=` | Mysql user to use |
 | `-e MYSQL_PASSWORD=` | Mysql password to use |
 | `-e APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
+| `-e APP_KEY=` | App key used for encrypting stored data. Generate with `docker exec snipe-it php /app/www/artisan key:generate --show`. |
 | `-e APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
 | `-e APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
-| `-e MAIL_PORT_587_TCP_ADDR=US/Pacific` | SMTP mail server ip or hostname. |
-| `-e MAIL_PORT_587_TCP_PORT=US/Pacific` | SMTP mail server port. |
-| `-e MAIL_ENV_FROM_ADDR=US/Pacific` | The email address mail should be replied to and listed when sent. |
-| `-e MAIL_ENV_FROM_NAME=US/Pacific` | The name listed on email sent from the default account on the system. |
-| `-e MAIL_ENV_ENCRYPTION=US/Pacific` | Mail encryption to use e.g. `tls`. |
-| `-e MAIL_ENV_USERNAME=US/Pacific` | SMTP server login username. |
-| `-e MAIL_ENV_PASSWORD=US/Pacific` | SMTP server login password. |
+| `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mail server ip or hostname. |
+| `-e MAIL_PORT_587_TCP_PORT=` | SMTP mail server port. |
+| `-e MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent. |
+| `-e MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system. |
+| `-e MAIL_ENV_ENCRYPTION=` | Mail encryption to use e.g. `tls`. |
+| `-e MAIL_ENV_USERNAME=` | SMTP server login username. |
+| `-e MAIL_ENV_PASSWORD=` | SMTP server login password. |
 | `-v /config` | Contains your config files and data storage for Snipe-IT |
 
 ## Environment variables from files (Docker secrets)
@@ -325,6 +328,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **31.05.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **06.03.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **17.02.24:** - Add php81-exif.
 * **03.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
