@@ -59,7 +59,7 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-"Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
+Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
 
 **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
 

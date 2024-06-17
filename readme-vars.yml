@@ -44,7 +44,7 @@ opt_param_env_vars:
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
-  "Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
+  Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
 
   **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
 
