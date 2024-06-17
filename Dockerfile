@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-alpine-nginx:3.17
+FROM ghcr.io/linuxserver/baseimage-alpine-nginx:3.20
 
 # set version label
 ARG BUILD_DATE
@@ -10,35 +10,26 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 LABEL maintainer="TheLamer"
 
 RUN \
-  echo "**** install build packages ****" && \
-  apk add --no-cache --virtual=build-dependencies \
-    composer && \
   echo "**** install runtime packages ****" && \
   apk add --no-cache \
     libxml2 \
     mariadb-client \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-exif \
-    php81-gd \
-    php81-iconv \
-    php81-ldap \
-    php81-pdo_mysql \
-    php81-pdo_sqlite \
-    php81-pecl-redis \
-    php81-phar \
-    php81-sodium \
-    php81-sqlite3 \
-    php81-tokenizer \
-    php81-xmlreader \
-    php81-zip && \
-  apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    php81-pecl-mcrypt && \
+    php83-bcmath \
+    php83-exif \
+    php83-gd \
+    php83-ldap \
+    php83-pdo_mysql \
+    php83-pdo_sqlite \
+    php83-pecl-redis \
+    php83-sodium \
+    php83-sqlite3 \
+    php83-tokenizer \
+    php83-xmlreader \
+    php83-pecl-mcrypt && \
   echo "**** configure php-fpm to pass env vars ****" && \
-  sed -E -i 's/^;?clear_env ?=.*$/clear_env = no/g' /etc/php81/php-fpm.d/www.conf && \
-  grep -qxF 'clear_env = no' /etc/php81/php-fpm.d/www.conf || echo 'clear_env = no' >> /etc/php81/php-fpm.d/www.conf && \
-  echo "env[PATH] = /usr/local/bin:/usr/bin:/bin" >> /etc/php81/php-fpm.conf && \
+  sed -E -i 's/^;?clear_env ?=.*$/clear_env = no/g' /etc/php83/php-fpm.d/www.conf && \
+  grep -qxF 'clear_env = no' /etc/php83/php-fpm.d/www.conf || echo 'clear_env = no' >> /etc/php83/php-fpm.d/www.conf && \
+  echo "env[PATH] = /usr/local/bin:/usr/bin:/bin" >> /etc/php83/php-fpm.conf && \
   echo "**** install snipe-it ****" && \
   mkdir -p \
     /app/www/ && \
@@ -59,10 +50,10 @@ RUN \
     "/app/www/storage" \
     "/app/www/public/uploads" \
     /defaults/ && \
+  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup ****" && \
-  apk del --purge \
-    build-dependencies && \
   rm -rf \
+    $HOME/.cache \
     $HOME/.composer \
     /tmp/*
 
@@ -71,4 +62,5 @@ COPY root/ /
 
 # ports and volumes
 EXPOSE 80 443
+
 VOLUME /config

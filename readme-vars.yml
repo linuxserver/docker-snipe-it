@@ -3,7 +3,7 @@
 # project information
 project_name: snipe-it
 project_url: "https://github.com/snipe/snipe-it"
-project_logo: "https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png"
+project_logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/snipe-it-logo.png"
 project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster."
 project_lsio_github_repo_url: "https://github.com/linuxserver/docker-{{ project_name }}"
 # supported architectures
@@ -15,12 +15,13 @@ common_param_env_vars_enabled: true
 param_container_name: "{{ project_name }}"
 param_usage_include_vols: true
 param_volumes:
-  - {vol_path: "/config", vol_host_path: "/path/to/data", desc: "Contains your config files and data storage for Snipe-IT"}
+  - {vol_path: "/config", vol_host_path: "/path/to/{{ project_name }}/data", desc: "Contains your config files and data storage for Snipe-IT"}
 param_usage_include_ports: true
 param_ports:
   - {external_port: "8080", internal_port: "80", port_desc: "Snipe-IT Web UI"}
 param_usage_include_env: true
 param_env_vars:
+  - {env_var: "APP_KEY", env_value: "", desc: "App key used for encrypting stored data. Generate with `docker exec snipe-it php /app/www/artisan key:generate --show`."}
   - {env_var: "APP_URL", env_value: "http://localhost:8080", desc: "Hostname or IP and port if applicable, be sure to define https/http"}
   - {env_var: "MYSQL_PORT_3306_TCP_ADDR", env_value: "", desc: "Mysql hostname or IP to use"}
   - {env_var: "MYSQL_PORT_3306_TCP_PORT", env_value: "", desc: "Mysql port to use"}
@@ -30,29 +31,27 @@ param_env_vars:
 
 opt_param_usage_include_env: true
 opt_param_env_vars:
-  - {env_var: "APP_ENV", env_value: "production", desc: "Default is `production` but can use `testing` or `develop`."}
   - {env_var: "APP_DEBUG", env_value: "false", desc: "Set to `true` to see debugging output in the web UI."}
+  - {env_var: "APP_ENV", env_value: "production", desc: "Default is `production` but can use `testing` or `develop`."}
+  - {env_var: "APP_FORCE_TLS", env_value: "false", desc: "Set to `true` if running behind a reverse proxy"}
   - {env_var: "APP_LOCALE", env_value: "", desc: "Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language)."}
-  - {env_var: "MAIL_PORT_587_TCP_ADDR", env_value: "US/Pacific", desc: "SMTP mail server ip or hostname."}
-  - {env_var: "MAIL_PORT_587_TCP_PORT", env_value: "US/Pacific", desc: "SMTP mail server port."}
-  - {env_var: "MAIL_ENV_FROM_ADDR", env_value: "US/Pacific", desc: "The email address mail should be replied to and listed when sent."}
-  - {env_var: "MAIL_ENV_FROM_NAME", env_value: "US/Pacific", desc: "The name listed on email sent from the default account on the system."}
-  - {env_var: "MAIL_ENV_ENCRYPTION", env_value: "US/Pacific", desc: "Mail encryption to use e.g. `tls`."}
-  - {env_var: "MAIL_ENV_USERNAME", env_value: "US/Pacific", desc: "SMTP server login username."}
-  - {env_var: "MAIL_ENV_PASSWORD", env_value: "US/Pacific", desc: "SMTP server login password."}
+  - {env_var: "MAIL_PORT_587_TCP_ADDR", env_value: "", desc: "SMTP mail server ip or hostname."}
+  - {env_var: "MAIL_PORT_587_TCP_PORT", env_value: "", desc: "SMTP mail server port."}
+  - {env_var: "MAIL_ENV_FROM_ADDR", env_value: "", desc: "The email address mail should be replied to and listed when sent."}
+  - {env_var: "MAIL_ENV_FROM_NAME", env_value: "", desc: "The name listed on email sent from the default account on the system."}
+  - {env_var: "MAIL_ENV_ENCRYPTION", env_value: "", desc: "Mail encryption to use e.g. `tls`."}
+  - {env_var: "MAIL_ENV_USERNAME", env_value: "", desc: "SMTP server login username."}
+  - {env_var: "MAIL_ENV_PASSWORD", env_value: "", desc: "SMTP server login password."}
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
-  "Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
+  Access the webui at `<your-ip>:8080`, for more information check out [{{ project_name|capitalize }}]({{ project_url }}).
 
   **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
 
-  ### PHP customization
-
-  This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
-
 # changelog
 changelogs:
+  - {date: "17.06.24:", desc: "Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings."}
   - {date: "06.03.24:", desc: "Existing users should update: site-confs/default.conf - Cleanup default site conf."}
   - {date: "17.02.24:", desc: "Add php81-exif."}
   - {date: "03.07.23:", desc: "Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)"}

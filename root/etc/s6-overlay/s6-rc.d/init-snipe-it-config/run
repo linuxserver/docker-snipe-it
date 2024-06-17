@@ -35,11 +35,13 @@ if [[ ! -L /app/www/public/uploads ]]; then
 fi
 
 # Create API key if needed
-if [[ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]]; then
+if [[ ! -f "/config/SNIPE_IT_APP_KEY.txt" ]] && [[ -z "${APP_KEY}" ]]; then
     echo "Generating SnipeIT app key for first run"
     key=$(php /app/www/artisan key:generate --show)
-    echo "${key}" >/config/SNIPE_IT_APP_KEY.txt
-    echo "App Key set to ${key} you can modify the file to update /config/SNIPE_IT_APP_KEY.txt"
+    printf "%s" "${key}" > /run/s6/container_environment/APP_KEY
+    echo "App Key set to ${key} you can set the APP_KEY environment variable to provide a persistent key."
+elif [[ -f "/config/SNIPE_IT_APP_KEY.txt" ]]; then
+    printf '%s' "$(cat /config/SNIPE_IT_APP_KEY.txt)" > /run/s6/container_environment/APP_KEY
 fi
 
 # permissions
