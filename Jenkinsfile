@@ -36,7 +36,7 @@ pipeline {
     CI_DELAY='120'
     CI_DOCKERENV='APP_URL=http://localhost:80|NGINX_APP_URL=_|DB_CONNECTION=sqlite_testing'
     CI_AUTH=''
-    CI_WEBPATH=''
+    CI_WEBPATH='/setup'
   }
   stages {
     // Setup all the basic environment variables needed for the build

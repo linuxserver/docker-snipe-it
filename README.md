@@ -63,10 +63,6 @@ Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](
 
 **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
 
-### PHP customization
-
-This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
-
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
@@ -90,8 +86,9 @@ services:
       - MYSQL_DATABASE=
       - MYSQL_USER=
       - MYSQL_PASSWORD=
-      - APP_ENV=production #optional
       - APP_DEBUG=false #optional
+      - APP_ENV=production #optional
+      - APP_FORCE_TLS=false #optional
       - APP_LOCALE= #optional
       - MAIL_PORT_587_TCP_ADDR= #optional
       - MAIL_PORT_587_TCP_PORT= #optional
@@ -122,8 +119,9 @@ docker run -d \
   -e MYSQL_DATABASE= \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
-  -e APP_ENV=production `#optional` \
   -e APP_DEBUG=false `#optional` \
+  -e APP_ENV=production `#optional` \
+  -e APP_FORCE_TLS=false `#optional` \
   -e APP_LOCALE= `#optional` \
   -e MAIL_PORT_587_TCP_ADDR= `#optional` \
   -e MAIL_PORT_587_TCP_PORT= `#optional` \
@@ -155,8 +153,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-e MYSQL_DATABASE=` | Mysql database to use |
 | `-e MYSQL_USER=` | Mysql user to use |
 | `-e MYSQL_PASSWORD=` | Mysql password to use |
-| `-e APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
 | `-e APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
+| `-e APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
+| `-e APP_FORCE_TLS=false` | Set to `true` if running behind a reverse proxy |
 | `-e APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
 | `-e MAIL_PORT_587_TCP_ADDR=` | SMTP mail server ip or hostname. |
 | `-e MAIL_PORT_587_TCP_PORT=` | SMTP mail server port. |
@@ -328,7 +327,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
-* **31.05.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
+* **17.06.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **06.03.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **17.02.24:** - Add php81-exif.
 * **03.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
