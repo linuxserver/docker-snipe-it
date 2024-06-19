@@ -15,6 +15,7 @@ arietimmerman/laravel-scim-server              dev-master             php-compos
 aws/aws-crt-php                                v1.2.4                 php-composer    
 aws/aws-sdk-php                                3.303.1                php-composer    
 bacon/bacon-qr-code                            2.0.8                  php-composer    
+barryvdh/laravel-debugbar                      v3.13.5                php-composer    
 barryvdh/laravel-dompdf                        v2.1.1                 php-composer    
 bash                                           5.2.26-r0              apk             
 brick/math                                     0.11.0                 php-composer    
@@ -137,6 +138,7 @@ lz4-libs                                       1.9.4-r5               apk
 mariadb-client                                 10.11.8-r0             apk             
 mariadb-common                                 10.11.8-r0             apk             
 masterminds/html5                              2.8.1                  php-composer    
+maximebf/debugbar                              v1.22.1                php-composer    
 monolog/monolog                                3.5.0                  php-composer    
 mtdowling/jmespath.php                         2.7.0                  php-composer    
 musl                                           1.2.5-r0               apk             
