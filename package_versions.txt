@@ -135,8 +135,8 @@ linux-pam                                      1.6.0-r0               apk
 livewire/livewire                              v3.5.1                 php-composer    
 logrotate                                      3.21.0-r1              apk             
 lz4-libs                                       1.9.4-r5               apk             
-mariadb-client                                 10.11.8-r0             apk             
-mariadb-common                                 10.11.8-r0             apk             
+mariadb-client                                 10.11.10-r0            apk             
+mariadb-common                                 10.11.10-r0            apk             
 masterminds/html5                              2.9.0                  php-composer    
 maximebf/debugbar                              v1.22.3                php-composer    
 monolog/monolog                                3.6.0                  php-composer    
