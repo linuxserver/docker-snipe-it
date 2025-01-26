@@ -42,6 +42,8 @@ opt_param_env_vars:
   - {env_var: "MAIL_ENV_ENCRYPTION", env_value: "", desc: "Mail encryption to use e.g. `tls`."}
   - {env_var: "MAIL_ENV_USERNAME", env_value: "", desc: "SMTP server login username."}
   - {env_var: "MAIL_ENV_PASSWORD", env_value: "", desc: "SMTP server login password."}
+readonly_supported: false
+nonroot_supported: false
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
@@ -105,6 +107,7 @@ init_diagram: |
   "snipe-it:latest" <- Base Images
 # changelog
 changelogs:
+  - {date: "16.01.25:", desc: "Rebase to Alpine 3.21."}
   - {date: "17.06.24:", desc: "Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings."}
   - {date: "06.03.24:", desc: "Existing users should update: site-confs/default.conf - Cleanup default site conf."}
   - {date: "17.02.24:", desc: "Add php81-exif."}
