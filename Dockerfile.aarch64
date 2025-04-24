@@ -34,12 +34,12 @@ RUN \
   mkdir -p \
     /app/www/ && \
   if [ -z ${SNIPEIT_RELEASE+x} ]; then \
-    SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/snipe/snipe-it/releases/latest" \
+    SNIPEIT_RELEASE=$(curl -sX GET "https://api.github.com/repos/grokability/snipe-it/releases/latest" \
     | awk '/tag_name/{print $4;exit}' FS='[""]'); \
   fi && \
   curl -o \
     /tmp/snipeit.tar.gz -L \
-    "https://github.com/snipe/snipe-it/archive/${SNIPEIT_RELEASE}.tar.gz" && \
+    "https://github.com/grokability/snipe-it/archive/${SNIPEIT_RELEASE}.tar.gz" && \
   tar xf \
     /tmp/snipeit.tar.gz -C \
     /app/www/ --strip-components=1 && \
