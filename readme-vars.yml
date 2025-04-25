@@ -2,6 +2,11 @@
 
 # project information
 project_name: snipe-it
+project_deprecation_status: true
+project_deprecation_message: |
+  We recommend migrating to the official docker image from Grokability:
+  https://snipe-it.readme.io/docs/docker
+ 
 project_url: "https://github.com/grokability/snipe-it"
 project_logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/snipe-it-logo.png"
 project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster."
