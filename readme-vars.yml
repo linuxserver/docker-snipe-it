@@ -6,7 +6,6 @@ project_deprecation_status: true
 project_deprecation_message: |
   We recommend migrating to the official docker image from Grokability:
   https://snipe-it.readme.io/docs/docker
- 
 project_url: "https://github.com/grokability/snipe-it"
 project_logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/snipe-it-logo.png"
 project_blurb: "[{{ project_name|capitalize }}]({{ project_url }}) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster."
@@ -77,6 +76,7 @@ init_diagram: |
     init-snipe-it-config -> init-config-end
     init-config -> init-crontab-config
     init-mods-end -> init-custom-files
+    init-config-end -> init-deprecate
     base -> init-envfile
     init-os-end -> init-folders
     init-php -> init-keygen
@@ -92,6 +92,7 @@ init_diagram: |
     init-nginx -> init-php
     init-folders -> init-samples
     init-custom-files -> init-services
+    init-deprecate -> init-services
     init-nginx-end -> init-snipe-it-config
     init-permissions -> init-version-checks
     init-services -> svc-cron
