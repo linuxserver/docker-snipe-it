@@ -1,3 +1,10 @@
+# DEPRECATION NOTICE 
+This image is deprecated. We will not offer support for this image and it will not be updated.
+
+
+We recommend migrating to the official docker image from Grokability:
+https://snipe-it.readme.io/docs/docker
+
 <!--- Provide a general summary of your changes in the Title above -->
 
 [linuxserverurl]: https://linuxserver.io
